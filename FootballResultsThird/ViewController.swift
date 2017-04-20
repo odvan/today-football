@@ -320,9 +320,9 @@ extension ViewController: UITableViewDataSourcePrefetching {
             imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!] = imageLoadOperationAway
             }
         
-//            #if DEBUG_CELL_LIFECYCLE
-//                print(String.init(format: "prefetchRowsAt #%i", indexPath.row))
-//            #endif
+            #if DEBUG_CELL_LIFECYCLE
+                print(String.init(format: "prefetchRowsAt #%i", indexPath.row))
+            #endif
         }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
@@ -338,9 +338,9 @@ extension ViewController: UITableViewDataSourcePrefetching {
             imageLoadOperationHome.cancel()
             imageLoadOperationAway.cancel()
             
-//            #if DEBUG_CELL_LIFECYCLE
-//                print(String.init(format: "cancelPrefetchingForRowsAt #%i", indexPath.row))
-//            #endif
+            #if DEBUG_CELL_LIFECYCLE
+                print(String.init(format: "cancelPrefetchingForRowsAt #%i", indexPath.row))
+            #endif
         }
     }
 }

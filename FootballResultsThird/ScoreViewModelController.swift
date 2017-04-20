@@ -14,7 +14,7 @@ class ScoreViewModelController {
     // MARK: Constants & Variables
 
     let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PL,SA,PD,FL1,CL&"
-    let token = ""//
+    //let token =
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
@@ -214,11 +214,10 @@ private extension ScoreViewModelController {
         let competitionURL = competition["href"]
             else { return nil }
         
-        guard let odds = json["odds"] as? [String : Double],
-        let homeWin = odds["homeWin"],
-        let draw = odds["draw"],
-        let awayWin = odds["awayWin"]
-            else { return nil }
+        let odds = json["odds"] as? [String : Double]
+        let homeWin = odds?["homeWin"] ?? 0
+        let draw = odds?["draw"] ?? 0
+        let awayWin = odds?["awayWin"] ?? 0
 
         return Score(gameStatus: Game(rawValue: gameStatus)!, gameResult: "\(homeGoals) - \(awayGoals)", homeTeam: homeTeam, awayTeam: awayTeam, date: date, competition: competitionURL, odds: "Home: \(homeWin) ● Draw: \(draw) ● Away: \(awayWin)")
     }
