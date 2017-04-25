@@ -226,7 +226,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         cell.homeTeamLogo.setTeamLogo(imageHome)
                     }
-                    //strongSelf.imageLoadOperations.removeValue(forKey: (dictionary[scoreModel.homeTeam]?.teamLogoURL)!) - разобраться почему надо удалять
+                    
                 }
 
             cell.operation = imageLoadOperationHome
@@ -250,7 +250,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         cell.awayTeamLogo.setTeamLogo(imageAway)
                     }
-                    //strongSelf.imageLoadOperations.removeValue(forKey: indexPath)
                     
                 }
                 cell.operationTwo = imageLoadOperationAway
