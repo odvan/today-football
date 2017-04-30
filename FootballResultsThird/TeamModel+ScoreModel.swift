@@ -17,6 +17,7 @@ enum Game: String {
     case finished = "FINISHED"
     case postponed = "POSTPONED"
     case cancelled = "CANCELED"
+    case error = ""
  }
 
 // MARK: Team Model

@@ -16,7 +16,7 @@ class ImageLoadOperation: Operation {
     
     var url: String
     var completionHandler: ImageLoadOperationCompletionHandlerType
-    var image: UIImage? = #imageLiteral(resourceName: "placeHolderLogo")
+    var image: UIImage?
     
     init(url: String) {
         self.url = url
@@ -41,6 +41,7 @@ class ImageLoadOperation: Operation {
             strongSelf.image = image
             strongSelf.completionHandler?(image)
         }
+
     }
 
 }

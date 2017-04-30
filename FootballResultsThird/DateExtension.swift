@@ -15,7 +15,7 @@ extension Date {
     static func gameStatus(date: String?, status: Game) -> String? {
         
         switch status {
-        case .scheduled, .timed:
+        case .scheduled, .timed, .error:
             if let string = date {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ" //2017-03-05T11:00:00Z

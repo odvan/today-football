@@ -77,7 +77,7 @@ extension UIImage {
     }
 }
 
-// MARK: Put downloaded team image to table in the main queue
+// MARK: Put downloaded team image to the table cell in the main queue
 
 extension UIImageView {
     

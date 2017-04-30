@@ -19,6 +19,7 @@
 		C35C31331E77353000692978 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = C35C31321E77353000692978 /* ball.png */; };
 		C35C31351E7735E900692978 /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35C31341E7735E900692978 /* ScoreCell.swift */; };
 		C368A96A1E74A03B00D3DF39 /* Competition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C368A9691E74A03B00D3DF39 /* Competition.swift */; };
+		C36993221EB63AB8002C5871 /* TableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36993211EB63AB8002C5871 /* TableButton.swift */; };
 		C38AF0FE1E844B9500061D47 /* PrefetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF0FD1E844B9500061D47 /* PrefetchImage.swift */; };
 		C38AF1001E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF0FF1E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift */; };
 		C3FF57BD1E85A057009F7016 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35391691E859FF50008BC0C /* CocoaLumberjack.framework */; };
@@ -61,6 +62,7 @@
 		C35C31321E77353000692978 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
 		C35C31341E7735E900692978 /* ScoreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreCell.swift; sourceTree = "<group>"; };
 		C368A9691E74A03B00D3DF39 /* Competition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Competition.swift; sourceTree = "<group>"; };
+		C36993211EB63AB8002C5871 /* TableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableButton.swift; sourceTree = "<group>"; };
 		C38AF0FD1E844B9500061D47 /* PrefetchImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchImage.swift; sourceTree = "<group>"; };
 		C38AF0FF1E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIIMage+UIImageViewExtensions.swift"; sourceTree = "<group>"; };
 		C3FF57C21E85A205009F7016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		C359B9801E6F258D008D5269 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C36993211EB63AB8002C5871 /* TableButton.swift */,
 				C35C31301E7720EF00692978 /* PaddedLabel.swift */,
 				C3249C691E6C6D4A00A7381F /* Assets.xcassets */,
 				C35C31321E77353000692978 /* ball.png */,
@@ -233,6 +236,7 @@
 				C34081EC1E73287900533DB1 /* ScoreViewModelController.swift in Sources */,
 				C368A96A1E74A03B00D3DF39 /* Competition.swift in Sources */,
 				C3249C631E6C6D4A00A7381F /* AppDelegate.swift in Sources */,
+				C36993221EB63AB8002C5871 /* TableButton.swift in Sources */,
 				C35C31311E7720EF00692978 /* PaddedLabel.swift in Sources */,
 				C38AF0FE1E844B9500061D47 /* PrefetchImage.swift in Sources */,
 				C33904CC1E94345100470C8C /* DateExtension.swift in Sources */,

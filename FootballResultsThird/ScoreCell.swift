@@ -23,6 +23,8 @@ class ScoreCell: UITableViewCell {
     
     @IBOutlet weak var odds: UILabel!
     
+    @IBOutlet weak var liveGameSign: UIView!
+    
     var operation: Operation?
     var operationTwo: Operation?
 
@@ -31,6 +33,8 @@ class ScoreCell: UITableViewCell {
         // Initialization code
         
         setOpaqueBackground()
+        liveGameSign.layer.cornerRadius = 4
+
     }
 
     func configure(_ scoreModel: ScoreViewModel) {
@@ -42,7 +46,11 @@ class ScoreCell: UITableViewCell {
         score.text = scoreModel.gameResult
         gameStatus.text = Date.gameStatus(date: scoreModel.date, status: scoreModel.gameStatus)
         odds.text = scoreModel.odds
-        
+       
+        if scoreModel.gameStatus == .inPlay {
+            liveGameSign.alpha = 1.0
+        }
+
         isUserInteractionEnabled = false  // Cell selection is not required for this sample, maybe later
     }
     
@@ -51,6 +59,7 @@ class ScoreCell: UITableViewCell {
         
         homeTeamLogo.image = nil
         awayTeamLogo.image = nil
+        liveGameSign.alpha = 0
         
         if let operation = operation {
             if !operation.isFinished {

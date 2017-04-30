@@ -13,8 +13,8 @@ class ScoreViewModelController {
     
     // MARK: Constants & Variables
 
-    let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PL,SA,PD,FL1,CL&"
-    //let token =
+    let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PD,PL,SA,FL1,CL&"
+    let token = "7dc5b5f70135455b9c5e1677c33920d2"
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
@@ -35,8 +35,8 @@ class ScoreViewModelController {
             return
         }
         
-        let urlRequest = URLRequest(url: url)
-        //urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
@@ -56,12 +56,13 @@ class ScoreViewModelController {
                     return
                 }
                 
+                print("⚠️ game counts: \(fixturesFrom.count)")
                 var scores = [Score?]()
                 var competitions: [String] = []
 
                 let group = DispatchGroup()
                 let syncQueue = DispatchQueue(label: "com.domain.app.teams")
-                let finishQueue = DispatchQueue(label: "com.domain.app.finish", qos: .userInitiated)
+                let finishQueue = DispatchQueue(label: "com.domain.app.finish", qos: .userInitiated) //, attributes: .concurrent)
                 
                 for fixture in fixturesFrom {
                     
@@ -138,8 +139,8 @@ class ScoreViewModelController {
         guard let url = URL(string: competitionURL)
             else { return }
         
-        let urlRequestInside = URLRequest(url: url)
-        //urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        var urlRequestInside = URLRequest(url: url)
+        urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         let taskInside = session.dataTask(with: urlRequestInside) { (data, response, error) in
             

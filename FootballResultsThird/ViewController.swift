@@ -167,6 +167,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
     
+    func showTable(sender: TableButton) {
+        print("🔴🔴🔴 table for \(scoreViewModelController.competitionsToday[sender.section!]) will be added later")
+    }
+    
     // MARK: Table methods
     
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -185,6 +189,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
+        
+        if (view.subviews.last?.isKind(of: UIButton.self))! {
+            view.subviews.last?.removeFromSuperview()
+        }
+        
+        let standingsButton = TableButton(type: UIButtonType.system)
+        standingsButton.setTitle("Table", for: .normal)
+        standingsButton.section = section
+        standingsButton.addTarget(self, action: #selector(ViewController.showTable(sender:)), for: UIControlEvents.touchUpInside)
+        view.addSubview(standingsButton)
+        
+        // Place button on far right margin of header
+        standingsButton.translatesAutoresizingMaskIntoConstraints = false
+        standingsButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor).isActive = true
+        standingsButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -217,7 +236,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 cell.homeTeamLogo.image = imageHome //setTeamLogo(imageHome)
                 
             } else {
-                
+                cell.homeTeamLogo.image = #imageLiteral(resourceName: "placeHolderLogo")
                 let imageLoadOperationHome = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
                 imageLoadOperationHome.completionHandler = { [weak self] (imageHome) in
                     // guard let strongSelf = self else { return }
@@ -226,7 +245,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         
                         cell.homeTeamLogo.setTeamLogo(imageHome)
                     }
-                    
+                    //strongSelf.imageLoadOperations.removeValue(forKey: (dictionary[scoreModel.homeTeam]?.teamLogoURL)!) - разобраться почему надо удалять
                 }
 
             cell.operation = imageLoadOperationHome
@@ -241,7 +260,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 cell.awayTeamLogo.image = imageAway //setTeamLogo(imageAway)
 
             } else {
-
+                cell.awayTeamLogo.image = #imageLiteral(resourceName: "placeHolderLogo")
                 let imageLoadOperationAway = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
                 imageLoadOperationAway.completionHandler = { [weak self] (imageAway) in
                     // guard let strongSelf = self else { return }
@@ -319,9 +338,9 @@ extension ViewController: UITableViewDataSourcePrefetching {
             imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!] = imageLoadOperationAway
             }
         
-            #if DEBUG_CELL_LIFECYCLE
-                print(String.init(format: "prefetchRowsAt #%i", indexPath.row))
-            #endif
+//            #if DEBUG_CELL_LIFECYCLE
+//                print(String.init(format: "prefetchRowsAt #%i", indexPath.row))
+//            #endif
         }
     
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
@@ -337,9 +356,9 @@ extension ViewController: UITableViewDataSourcePrefetching {
             imageLoadOperationHome.cancel()
             imageLoadOperationAway.cancel()
             
-            #if DEBUG_CELL_LIFECYCLE
-                print(String.init(format: "cancelPrefetchingForRowsAt #%i", indexPath.row))
-            #endif
+//            #if DEBUG_CELL_LIFECYCLE
+//                print(String.init(format: "cancelPrefetchingForRowsAt #%i", indexPath.row))
+//            #endif
         }
     }
 }
