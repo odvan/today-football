@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C3249C631E6C6D4A00A7381F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3249C621E6C6D4A00A7381F /* AppDelegate.swift */; };
-		C3249C681E6C6D4A00A7381F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3249C661E6C6D4A00A7381F /* Main.storyboard */; };
 		C3249C6A1E6C6D4A00A7381F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3249C691E6C6D4A00A7381F /* Assets.xcassets */; };
 		C3249C6D1E6C6D4A00A7381F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3249C6B1E6C6D4A00A7381F /* LaunchScreen.storyboard */; };
 		C3249C751E6C6D7800A7381F /* TeamModel+ScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3249C741E6C6D7800A7381F /* TeamModel+ScoreModel.swift */; };
@@ -21,11 +20,12 @@
 		C368A96A1E74A03B00D3DF39 /* Competition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C368A9691E74A03B00D3DF39 /* Competition.swift */; };
 		C36993221EB63AB8002C5871 /* TableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36993211EB63AB8002C5871 /* TableButton.swift */; };
 		C38AF0FE1E844B9500061D47 /* PrefetchImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF0FD1E844B9500061D47 /* PrefetchImage.swift */; };
-		C38AF1001E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF0FF1E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift */; };
-		C3FF57BD1E85A057009F7016 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35391691E859FF50008BC0C /* CocoaLumberjack.framework */; };
-		C3FF57BE1E85A057009F7016 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C35391691E859FF50008BC0C /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C3FF57C01E85A05A009F7016 /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35391671E859FE10008BC0C /* SVGKit.framework */; };
-		C3FF57C11E85A05A009F7016 /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C35391671E859FE10008BC0C /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C38AF1001E844C9500061D47 /* UIImage+UIImageViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AF0FF1E844C9500061D47 /* UIImage+UIImageViewExtensions.swift */; };
+		C3A5FDE91EB7CA8200EEB0A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3A5FDE71EB7CA8200EEB0A2 /* Main.storyboard */; };
+		C3A5FDEA1EB7CCBA00EEB0A2 /* SVGKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35391671E859FE10008BC0C /* SVGKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		C3A5FDEB1EB7CCBA00EEB0A2 /* SVGKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C35391671E859FE10008BC0C /* SVGKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C3A5FDEC1EB7CCC500EEB0A2 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C35391691E859FF50008BC0C /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		C3A5FDED1EB7CCC500EEB0A2 /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C35391691E859FF50008BC0C /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C3FF57C31E85A205009F7016 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3FF57C21E85A205009F7016 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -36,8 +36,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C3FF57C11E85A05A009F7016 /* SVGKit.framework in Embed Frameworks */,
-				C3FF57BE1E85A057009F7016 /* CocoaLumberjack.framework in Embed Frameworks */,
+				C3A5FDEB1EB7CCBA00EEB0A2 /* SVGKit.framework in Embed Frameworks */,
+				C3A5FDED1EB7CCC500EEB0A2 /* CocoaLumberjack.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,7 +47,6 @@
 /* Begin PBXFileReference section */
 		C3249C5F1E6C6D4A00A7381F /* FootballResultsThird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballResultsThird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3249C621E6C6D4A00A7381F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C3249C671E6C6D4A00A7381F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C3249C691E6C6D4A00A7381F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C3249C6C1E6C6D4A00A7381F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C3249C6E1E6C6D4A00A7381F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -64,7 +63,8 @@
 		C368A9691E74A03B00D3DF39 /* Competition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Competition.swift; sourceTree = "<group>"; };
 		C36993211EB63AB8002C5871 /* TableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableButton.swift; sourceTree = "<group>"; };
 		C38AF0FD1E844B9500061D47 /* PrefetchImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchImage.swift; sourceTree = "<group>"; };
-		C38AF0FF1E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIIMage+UIImageViewExtensions.swift"; sourceTree = "<group>"; };
+		C38AF0FF1E844C9500061D47 /* UIImage+UIImageViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+UIImageViewExtensions.swift"; sourceTree = "<group>"; };
+		C3A5FDE81EB7CA8200EEB0A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C3FF57C21E85A205009F7016 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,8 +73,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3FF57C01E85A05A009F7016 /* SVGKit.framework in Frameworks */,
-				C3FF57BD1E85A057009F7016 /* CocoaLumberjack.framework in Frameworks */,
+				C3A5FDEA1EB7CCBA00EEB0A2 /* SVGKit.framework in Frameworks */,
+				C3A5FDEC1EB7CCC500EEB0A2 /* CocoaLumberjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +89,7 @@
 				C3249C601E6C6D4A00A7381F /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		C3249C601E6C6D4A00A7381F /* Products */ = {
 			isa = PBXGroup;
@@ -102,12 +103,11 @@
 			isa = PBXGroup;
 			children = (
 				C3249C621E6C6D4A00A7381F /* AppDelegate.swift */,
-				C3FF57C21E85A205009F7016 /* ViewController.swift */,
-				C34081EB1E73287900533DB1 /* ScoreViewModelController.swift */,
-				C35C31341E7735E900692978 /* ScoreCell.swift */,
-				C3249C661E6C6D4A00A7381F /* Main.storyboard */,
+				C3A5FDE71EB7CA8200EEB0A2 /* Main.storyboard */,
+				C35472551EB7BB1B00D37EE0 /* Controllers */,
 				C359B97F1E6F2565008D5269 /* Models */,
 				C33904CA1E94340A00470C8C /* Extensions */,
+				C35472541EB7BAA800D37EE0 /* Views */,
 				C359B9801E6F258D008D5269 /* Supporting Files */,
 			);
 			path = FootballResultsThird;
@@ -117,10 +117,10 @@
 			isa = PBXGroup;
 			children = (
 				C38AF0FD1E844B9500061D47 /* PrefetchImage.swift */,
-				C38AF0FF1E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift */,
+				C38AF0FF1E844C9500061D47 /* UIImage+UIImageViewExtensions.swift */,
 				C33904CB1E94345100470C8C /* DateExtension.swift */,
 			);
-			name = Extensions;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C353915A1E859C480008BC0C /* Frameworks */ = {
@@ -130,7 +130,26 @@
 				C35391671E859FE10008BC0C /* SVGKit.framework */,
 				C35391641E859D1D0008BC0C /* FootballResultsThird-Bridging-Header.h */,
 			);
-			name = Frameworks;
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		C35472541EB7BAA800D37EE0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C36993211EB63AB8002C5871 /* TableButton.swift */,
+				C35C31301E7720EF00692978 /* PaddedLabel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C35472551EB7BB1B00D37EE0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C3FF57C21E85A205009F7016 /* ViewController.swift */,
+				C34081EB1E73287900533DB1 /* ScoreViewModelController.swift */,
+				C35C31341E7735E900692978 /* ScoreCell.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		C359B97F1E6F2565008D5269 /* Models */ = {
@@ -140,20 +159,18 @@
 				C3249C741E6C6D7800A7381F /* TeamModel+ScoreModel.swift */,
 				C359B9811E6F2705008D5269 /* ScoreViewModel.swift */,
 			);
-			name = Models;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C359B9801E6F258D008D5269 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C36993211EB63AB8002C5871 /* TableButton.swift */,
-				C35C31301E7720EF00692978 /* PaddedLabel.swift */,
 				C3249C691E6C6D4A00A7381F /* Assets.xcassets */,
 				C35C31321E77353000692978 /* ball.png */,
 				C3249C6B1E6C6D4A00A7381F /* LaunchScreen.storyboard */,
 				C3249C6E1E6C6D4A00A7381F /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +217,6 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
 			);
 			mainGroup = C3249C561E6C6D4900A7381F;
@@ -219,9 +235,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3249C6D1E6C6D4A00A7381F /* LaunchScreen.storyboard in Resources */,
+				C3A5FDE91EB7CA8200EEB0A2 /* Main.storyboard in Resources */,
 				C3249C6A1E6C6D4A00A7381F /* Assets.xcassets in Resources */,
 				C35C31331E77353000692978 /* ball.png in Resources */,
-				C3249C681E6C6D4A00A7381F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,27 +259,28 @@
 				C3249C751E6C6D7800A7381F /* TeamModel+ScoreModel.swift in Sources */,
 				C35C31351E7735E900692978 /* ScoreCell.swift in Sources */,
 				C359B9821E6F2705008D5269 /* ScoreViewModel.swift in Sources */,
-				C38AF1001E844C9500061D47 /* UIIMage+UIImageViewExtensions.swift in Sources */,
+				C38AF1001E844C9500061D47 /* UIImage+UIImageViewExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		C3249C661E6C6D4A00A7381F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C3249C671E6C6D4A00A7381F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C3249C6B1E6C6D4A00A7381F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				C3249C6C1E6C6D4A00A7381F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		C3A5FDE71EB7CA8200EEB0A2 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C3A5FDE81EB7CA8200EEB0A2 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -295,6 +312,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = ./Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -344,6 +362,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = ./Frameworks;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -369,13 +388,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
-				INFOPLIST_FILE = FootballResultsThird/Info.plist;
+				INFOPLIST_FILE = "FootballResultsThird/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.odvan.FootballResultsThird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "FootballResultsThird-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Frameworks/FootballResultsThird-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -390,13 +410,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
-				INFOPLIST_FILE = FootballResultsThird/Info.plist;
+				INFOPLIST_FILE = "FootballResultsThird/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.odvan.FootballResultsThird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "FootballResultsThird-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "./Frameworks/FootballResultsThird-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
