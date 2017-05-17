@@ -14,7 +14,7 @@ class ScoreViewModelController {
     // MARK: Constants & Variables
 
     let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PD,PL,SA,FL1,CL&"
-    //let token = 
+    //let token =
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
@@ -36,7 +36,7 @@ class ScoreViewModelController {
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        //urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
@@ -140,7 +140,7 @@ class ScoreViewModelController {
             else { return }
         
         var urlRequestInside = URLRequest(url: url)
-        urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        //urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         let taskInside = session.dataTask(with: urlRequestInside) { (data, response, error) in
             
