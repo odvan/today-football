@@ -82,7 +82,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderLogo" translatesAutoresizingMaskIntoConstraints="NO" id="BSA-lP-fce">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderLogo" translatesAutoresizingMaskIntoConstraints="NO" id="BSA-lP-fce" customClass="CustomImageView" customModule="FootballResultsThird" customModuleProvider="target">
                                                             <rect key="frame" x="120.5" y="0.0" width="26" height="26"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="26" id="Q18-a2-m2D"/>
@@ -94,7 +94,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XbL-Qm-ua4">
                                                     <rect key="frame" x="220.5" y="19" width="146.5" height="26"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderLogo" translatesAutoresizingMaskIntoConstraints="NO" id="6dh-5n-7wM">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeHolderLogo" translatesAutoresizingMaskIntoConstraints="NO" id="6dh-5n-7wM" customClass="CustomImageView" customModule="FootballResultsThird" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="26" id="R10-lV-YtS"/>

@@ -10,7 +10,7 @@ import UIKit
 
 let day: Double = 60 * 60 * 24
 
-enum fixturesTimeFrame: String {
+enum FixturesTimeFrame {
     
     case yesterday
     case today
@@ -34,13 +34,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // MARK: Constants & Variables, mainly for caching fetched data
     
-    fileprivate let imageLoadQueue = OperationQueue()
-    fileprivate var imageLoadOperations: [String : ImageLoadOperation] = [:]
     fileprivate let scoreViewModelController = ScoreViewModelController()
     @IBOutlet weak var dateSC: UISegmentedControl!
 
     @IBOutlet weak var tableScore: UITableView!
     private let refreshControl = UIRefreshControl()
+    // Cells ID
+    let score = "scoreCell"
+    let noScore = "noCompetition"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableScore.prefetchDataSource = self
         
-        scoreViewModelController.retrieveScores(from: fixturesTimeFrame.today.date) { [weak self] (success, error) in
+        scoreViewModelController.retrieveScores(from: FixturesTimeFrame.today.date) { [weak self] (success, error) in
             
             guard let strongSelf = self else { return }
 
@@ -87,11 +88,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         switch dateSC.selectedSegmentIndex {
         case 0:
-            dateForTab = fixturesTimeFrame.yesterday.date
+            dateForTab = FixturesTimeFrame.yesterday.date
         case 1:
-            dateForTab = fixturesTimeFrame.today.date
+            dateForTab = FixturesTimeFrame.today.date
         case 2:
-            dateForTab = fixturesTimeFrame.tomorrow.date
+            dateForTab = FixturesTimeFrame.tomorrow.date
         default:
             break
         }
@@ -133,14 +134,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func dateFetchSC(_ sender: Any) {
         
         var dateForTab: String?
-        
+        imageLoadQueue.cancelAllOperations()
+
         switch dateSC.selectedSegmentIndex {
         case 0:
-         dateForTab = fixturesTimeFrame.yesterday.date
+         dateForTab = FixturesTimeFrame.yesterday.date
         case 1:
-            dateForTab = fixturesTimeFrame.today.date
+            dateForTab = FixturesTimeFrame.today.date
         case 2:
-            dateForTab = fixturesTimeFrame.tomorrow.date
+            dateForTab = FixturesTimeFrame.tomorrow.date
         default:
             break
         }
@@ -215,8 +217,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let score = "scoreCell"
-        let noScore = "noCompetition"
         
         if scoreViewModelController.competitionsToday.count != 0 {
         let cell = tableScore.dequeueReusableCell(withIdentifier: score, for: indexPath) as! ScoreCell
@@ -229,54 +229,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.homeTeam.text = dictionary[scoreModel.homeTeam]?.shortName
             cell.awayTeam.text = dictionary[scoreModel.awayTeam]?.shortName
         
-            
-            if let imageLoadOperationHome = imageLoadOperations[(dictionary[scoreModel.homeTeam]?.logoURL)!],
-                let imageHome = imageLoadOperationHome.image {
-                print("we there: home")
-                cell.homeTeamLogo.image = imageHome //setTeamLogo(imageHome)
-                
-            } else {
-                cell.homeTeamLogo.image = #imageLiteral(resourceName: "placeHolderLogo")
-                let imageLoadOperationHome = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
-                imageLoadOperationHome.completionHandler = { [weak self] (imageHome) in
-                    // guard let strongSelf = self else { return }
-                    
-                    if let cell: ScoreCell = tableView.cellForRow(at: indexPath) as? ScoreCell {
-                        
-                        cell.homeTeamLogo.setTeamLogo(imageHome)
-                    }
-                    //strongSelf.imageLoadOperations.removeValue(forKey: (dictionary[scoreModel.homeTeam]?.teamLogoURL)!) - разобраться почему надо удалять
-                }
-
-            cell.operation = imageLoadOperationHome
-            imageLoadQueue.addOperation(imageLoadOperationHome)
-            imageLoadOperations[(dictionary[scoreModel.homeTeam]?.logoURL)!] = imageLoadOperationHome
-            
-        }
-        
-            if let imageLoadOperationAway = imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!],
-                let imageAway = imageLoadOperationAway.image {
-                print("we there: away")
-                cell.awayTeamLogo.image = imageAway //setTeamLogo(imageAway)
-
-            } else {
-                cell.awayTeamLogo.image = #imageLiteral(resourceName: "placeHolderLogo")
-                let imageLoadOperationAway = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
-                imageLoadOperationAway.completionHandler = { [weak self] (imageAway) in
-                    // guard let strongSelf = self else { return }
-                    
-                    if let cell: ScoreCell = tableView.cellForRow(at: indexPath) as? ScoreCell {
-                        
-                        cell.awayTeamLogo.setTeamLogo(imageAway)
-                    }
-                    
-                }
-                cell.operationTwo = imageLoadOperationAway
-
-                imageLoadQueue.addOperation(imageLoadOperationAway)
-                imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!] = imageLoadOperationAway
-
-            }
+            cell.homeTeamLogo.updateLogo(link: dictionary[scoreModel.homeTeam]?.logoURL)
+            cell.operG = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
+            cell.awayTeamLogo.updateLogo(link: dictionary[scoreModel.awayTeam]?.logoURL)
+            cell.operTwoG = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
             
         }
         //print("index path: \(indexPath.row) - \(indexPath) = \(imageLoadOperations.count)")
@@ -320,23 +276,26 @@ extension ViewController: UITableViewDataSourcePrefetching {
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         
         let dictionary = scoreViewModelController.teamsDictGlobal
-        
+
         for indexPath in indexPaths {
             
-            guard let scoreModel = scoreViewModelController.fixture(at: indexPath.section, at: indexPath.row) else { return }
-
-            if let _ = imageLoadOperations[(dictionary[scoreModel.homeTeam]?.logoURL)!],
-                let _ = imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!] {
+            guard let scoreModel = scoreViewModelController.fixture(at: indexPath.section, at: indexPath.row),
+                let linkHome = dictionary[scoreModel.homeTeam]?.logoURL,
+                let linkAway = dictionary[scoreModel.awayTeam]?.logoURL
+                else { return }
+           
+            if let _ = imgCache.object(forKey: linkHome as AnyObject),
+                let _ = imgCache.object(forKey: linkAway as AnyObject) {
                 return
             }
             
-            let imageLoadOperationHome = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
-            let imageLoadOperationAway = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
-
+            let imageLoadOperationHome = ImageLoadOperation(url: linkHome)
+            let imageLoadOperationAway = ImageLoadOperation(url: linkAway)
+            
             imageLoadQueue.addOperations([imageLoadOperationHome, imageLoadOperationAway], waitUntilFinished: false)
-            imageLoadOperations[(dictionary[scoreModel.homeTeam]?.logoURL)!] = imageLoadOperationHome
-            imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!] = imageLoadOperationAway
-            }
+            imgCache.setObject(imageLoadOperationHome, forKey: linkHome as AnyObject)
+            imgCache.setObject(imageLoadOperationAway, forKey: linkAway as AnyObject)
+        }
         
 //            #if DEBUG_CELL_LIFECYCLE
 //                print(String.init(format: "prefetchRowsAt #%i", indexPath.row))
@@ -362,7 +321,7 @@ extension ViewController: UITableViewDataSourcePrefetching {
         }
     }
 }
-    
+
 // MARK: Extension to show UIAlert when data can't be fetched
 
 extension UIViewController {

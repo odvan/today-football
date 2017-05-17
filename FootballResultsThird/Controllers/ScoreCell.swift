@@ -10,13 +10,14 @@ import UIKit
 
 // MARK: Customizing cell for table
 
+
 class ScoreCell: UITableViewCell {
     
     @IBOutlet weak var homeTeam: UILabel!
     @IBOutlet weak var awayTeam: UILabel!
     
-    @IBOutlet weak var homeTeamLogo: UIImageView!
-    @IBOutlet weak var awayTeamLogo: UIImageView!
+    @IBOutlet weak var homeTeamLogo: CustomImageView!
+    @IBOutlet weak var awayTeamLogo: CustomImageView!
     
     @IBOutlet weak var score: PaddedLabel!
     @IBOutlet weak var gameStatus: UILabel!
@@ -25,8 +26,9 @@ class ScoreCell: UITableViewCell {
     
     @IBOutlet weak var liveGameSign: UIView!
     
-    var operation: Operation?
-    var operationTwo: Operation?
+    var operG: ImageLoadOperation?
+    var operTwoG: ImageLoadOperation?
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -36,7 +38,8 @@ class ScoreCell: UITableViewCell {
         liveGameSign.layer.cornerRadius = 4
 
     }
-
+    
+    
     func configure(_ scoreModel: ScoreViewModel) {
         
         // Teams logo pictures will be assigned asynchronously through an ImageLoadOperation
@@ -61,18 +64,19 @@ class ScoreCell: UITableViewCell {
         awayTeamLogo.image = nil
         liveGameSign.alpha = 0
         
-        if let operation = operation {
+        if let operation = operG {
             if !operation.isFinished {
                 operation.cancel()
-                print("Operation cancelled")
-                self.operation = nil
+                print("Operation \(operation.url) during Cell reuse cancelled")
+                operG = nil
             }
         }
         
-        if let operationTwo = operationTwo {
+        if let operationTwo = operTwoG {
             if !operationTwo.isFinished {
                 operationTwo.cancel()
-                self.operationTwo = nil
+                print("Operation \(operationTwo.url) during Cell reuse cancelled")
+                operTwoG = nil
             }
         }
         
@@ -101,3 +105,4 @@ private extension ScoreCell {
 
     }
 }
+

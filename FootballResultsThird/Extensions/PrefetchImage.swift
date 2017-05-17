@@ -24,7 +24,7 @@ class ImageLoadOperation: Operation {
     
     override func main() {
         if self.isCancelled {
-            print("cancelled")
+            print("ImageLoadOperation \(self.url) cancelled")
             return
         }
         

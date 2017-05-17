@@ -11,7 +11,6 @@ import UIKit
 class TableButton: UIButton {
     
     
-    
     var section: Int?
     
     override var isHighlighted: Bool {
