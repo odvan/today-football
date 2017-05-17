@@ -14,7 +14,7 @@ class ScoreViewModelController {
     // MARK: Constants & Variables
 
     let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PD,PL,SA,FL1,CL&"
-    let token = "7dc5b5f70135455b9c5e1677c33920d2"
+    //let token = 
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
