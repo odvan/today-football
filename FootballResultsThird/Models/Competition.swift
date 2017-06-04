@@ -17,6 +17,8 @@ enum Competition: String {
     case BL1 = "http://api.football-data.org/v1/competitions/430"
     case CL = "http://api.football-data.org/v1/competitions/440"
     
+    case FAC = "http://api.football-data.org/v1/competitions/429"
+    
     var name: String {
         
         switch self {
@@ -32,6 +34,9 @@ enum Competition: String {
             return "🇩🇪 Bundesliga 2016/2017"
         case .CL:
             return "🇪🇺 Champions League 2016/2017"
+            
+        case .FAC:
+            return "FA Cup 2016/2017"
        
         }
     }

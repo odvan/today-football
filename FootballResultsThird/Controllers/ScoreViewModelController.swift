@@ -12,14 +12,16 @@ import Foundation
 class ScoreViewModelController {
     
     // MARK: Constants & Variables
-
+    let demoURL = "http://api.football-data.org/v1/fixtures/?timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20&league=BL1,PL,SA,PD,FL1,CL"
+    //http://api.football-data.org/v1/fixtures/?timeFrameStart=2016-11-14&timeFrameEnd=2016-11-14&league=FAC
     let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PD,PL,SA,FL1,CL&"
-    //let token =
+
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
     var teamsDictGlobal: [String : Team] = [:]
-    var competitionsToday: [String] = [""] // need to initialize with empty string to prevent appearing "no scheduled games" for a fraction of time
+    var competitionsToday: [String] = [""] // need initialize, will fix it later
+    var competitionsLinks: [String] = []
     var allCompetitions: [String] = [] // for caching competitions from all three days
     var competitionsSorted: [String : [ScoreViewModel]] = [:]
     
@@ -30,13 +32,12 @@ class ScoreViewModelController {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        guard let url = URL(string: baseURL + date) else {
+        guard let url = URL(string: demoURL) else {
             completionBlock(false, nil)
             return
         }
         
-        var urlRequest = URLRequest(url: url)
-        //urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        let urlRequest = URLRequest(url: url)
         
         let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
@@ -59,6 +60,7 @@ class ScoreViewModelController {
                 print("⚠️ game counts: \(fixturesFrom.count)")
                 var scores = [Score?]()
                 var competitions: [String] = []
+                var links: [String] = []
 
                 let group = DispatchGroup()
                 let syncQueue = DispatchQueue(label: "com.domain.app.teams")
@@ -66,12 +68,15 @@ class ScoreViewModelController {
                 
                 for fixture in fixturesFrom {
                     
-                    if let score = ScoreViewModelController.parse(fixture) {
+//                    if let score = ScoreViewModelController.parse(fixture) {
+                    if let score = Score(json: fixture) {
+
                         scores.append(score)
 
                         if competitions.count == 0 || !competitions.contains(score.competition.name) {
                             
-                           competitions.append(score.competition.name)
+                            competitions.append(score.competition.name)
+                            links.append(score.competition.rawValue)
                             
                         }
                         if strongSelf.allCompetitions.count == 0 || !strongSelf.allCompetitions.contains(score.competition.name) {
@@ -98,6 +103,7 @@ class ScoreViewModelController {
                 group.notify(queue: finishQueue) {
                     print("comp today: \(competitions)")
                     strongSelf.competitionsToday = competitions
+                    strongSelf.competitionsLinks = links
                     strongSelf.scoreModels = ScoreViewModelController.initViewModels(scores)
                     strongSelf.competitionsSorted = strongSelf.sortScoresForTable(competitionsToday: competitions, scoresToday: strongSelf.scoreModels as! [ScoreViewModel])
 
@@ -139,8 +145,7 @@ class ScoreViewModelController {
         guard let url = URL(string: competitionURL)
             else { return }
         
-        var urlRequestInside = URLRequest(url: url)
-        //urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        let urlRequestInside = URLRequest(url: url)
         
         let taskInside = session.dataTask(with: urlRequestInside) { (data, response, error) in
             
@@ -165,7 +170,7 @@ class ScoreViewModelController {
                     
                     guard let name = team["name"] as? String else { return }
                     let teamLogo = team["crestUrl"] as? String ?? ""
-                    let shortName = team["shortName"] as? String ?? ""
+                    let shortName = team["shortName"] as? String ?? name
                     
                     teamsDict[name] = Team(teamName: shortName, teamLogoURL: teamLogo)
                 }
@@ -195,35 +200,9 @@ class ScoreViewModelController {
     }
 }
 
-// MARK: Method for parsing JSON data into score model
+// MARK: Passing score model into scoreViewModel (according to MVVC architecture)
 
 private extension ScoreViewModelController {
-    
-    static func parse(_ json: [String: Any]) -> Score? {
-        
-        let homeTeam = json["homeTeamName"] as? String ?? ""
-        let awayTeam = json["awayTeamName"] as? String ?? ""
-        let date = json["date"] as? String ?? ""
-        let gameStatus = json["status"] as? String ?? ""
-        
-        let result = json["result"] as? [String : Any]
-        let homeGoals = result?["goalsHomeTeam"] as? Int ?? 0
-        let awayGoals = result?["goalsAwayTeam"] as? Int ?? 0
-        
-        guard let links = json["_links"] as? [String : Any],
-        let competition = links["competition"] as? [String : String],
-        let competitionURL = competition["href"]
-            else { return nil }
-        
-        let odds = json["odds"] as? [String : Double]
-        let homeWin = odds?["homeWin"] ?? 0
-        let draw = odds?["draw"] ?? 0
-        let awayWin = odds?["awayWin"] ?? 0
-
-        return Score(gameStatus: Game(rawValue: gameStatus)!, gameResult: "\(homeGoals) - \(awayGoals)", homeTeam: homeTeam, awayTeam: awayTeam, date: date, competition: competitionURL, odds: "Home: \(homeWin) ● Draw: \(draw) ● Away: \(awayWin)")
-    }
-    
-    // MARK: Passing score model into scoreViewModel (according to MVVC architecture)
     
     static func initViewModels(_ scores: [Score?]) -> [ScoreViewModel?] {
         return scores.map { score in

@@ -22,6 +22,8 @@ struct ScoreViewModel {
     
     let odds: String
     
+    let penalty: Penalty?
+    
     init(score: Score) {
         
         gameStatus = score.gameStatus
@@ -34,5 +36,6 @@ struct ScoreViewModel {
         competition = score.competition
         competitionTeamsURL = score.competitionTeamsURL
         odds = score.odds
+        penalty = score.penalty
     }
 }

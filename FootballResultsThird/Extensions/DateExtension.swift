@@ -67,6 +67,8 @@ extension Date {
             return "Postponed"
         case .cancelled:
             return "Cancelled"
+        case .afterExtraTime:
+            return "AET"
         }
         
         return nil
@@ -106,7 +108,11 @@ extension Date {
         if let interval = timeInterval {
             let otherDate = today.addingTimeInterval(interval)
             let setDateForTitle = formatter.string(from: otherDate)
-            print("❎ yesterday/tomorrow: \(setDateForTitle)")
+            if interval < 0 {
+                print("❎ yesterday: \(setDateForTitle)")
+            } else {
+                print("❎ tomorrow: \(setDateForTitle)")
+            }
             return setDateForTitle
             
         } else {

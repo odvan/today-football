@@ -43,6 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let score = "scoreCell"
     let noScore = "noCompetition"
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -73,6 +74,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         tableScore.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData(sender:)), for: .valueChanged)
+        
+        //self.tableScore.delaysContentTouches = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -169,11 +172,41 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
     
+    // MARK: Methods for navigation to Standings table
+    
     func showTable(sender: TableButton) {
+        
+        performSegue(withIdentifier: "connectionToCompTable", sender: sender)
+        
+//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+//        
+//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "CompetitionTable") as! CompTableViewController
+//        nextViewController.league = scoreViewModelController.competitionsLinks[sender.section!]
+//        let _ = nextViewController.view
+//        nextViewController.navBar.topItem?.title = scoreViewModelController.competitionsToday[sender.section!]
+//        nextViewController.teamsDictionary = scoreViewModelController.teamsDictGlobal
+
+//        self.present(nextViewController, animated:true, completion:nil)
+        
         print("🔴🔴🔴 table for \(scoreViewModelController.competitionsToday[sender.section!]) will be added later")
+
     }
     
-    // MARK: Table methods
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "connectionToCompTable" {
+            
+            let standingsVC = segue.destination as! CompTableViewController
+            let _ = standingsVC.view
+            standingsVC.navBar.topItem?.title = scoreViewModelController.competitionsToday[(sender as! TableButton).section!]
+            standingsVC.league = scoreViewModelController.competitionsLinks[(sender as! TableButton).section!]
+            standingsVC.teamsDictionary = scoreViewModelController.teamsDictGlobal
+            
+        }
+    }
+
+    
+    // MARK: Table's methods
     
     public func numberOfSections(in tableView: UITableView) -> Int {
         return (scoreViewModelController.competitionsToday.count != 0) ? scoreViewModelController.competitionsSorted.keys.count : 1
@@ -196,16 +229,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             view.subviews.last?.removeFromSuperview()
         }
         
-        let standingsButton = TableButton(type: UIButtonType.system)
-        standingsButton.setTitle("Table", for: .normal)
-        standingsButton.section = section
-        standingsButton.addTarget(self, action: #selector(ViewController.showTable(sender:)), for: UIControlEvents.touchUpInside)
-        view.addSubview(standingsButton)
-        
-        // Place button on far right margin of header
-        standingsButton.translatesAutoresizingMaskIntoConstraints = false
-        standingsButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor).isActive = true
-        standingsButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
+        if scoreViewModelController.competitionsToday[section] == Competition.CL.name {
+            return
+        } else {
+            
+            let standingsButton = TableButton(type: UIButtonType.system)
+            standingsButton.setTitle("Table", for: .normal)
+            standingsButton.section = section
+            standingsButton.addTarget(self, action: #selector(ViewController.showTable(sender:)), for: UIControlEvents.touchUpInside)
+            view.addSubview(standingsButton)
+            
+            // Place button on far right margin of header
+            standingsButton.translatesAutoresizingMaskIntoConstraints = false
+            standingsButton.centerYAnchor.constraint(equalTo: view.layoutMarginsGuide.centerYAnchor).isActive = true
+            standingsButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor).isActive = true
+        }
     }
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -234,6 +272,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             cell.awayTeamLogo.updateLogo(link: dictionary[scoreModel.awayTeam]?.logoURL)
             cell.operTwoG = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
             
+            if scoreModel.penalty?.hashValue == 0 {
+                cell.homeTeam.text! += "*"
+            }
+            if scoreModel.penalty?.hashValue == 1 {
+                cell.awayTeam.text! += "*"
+            }
         }
         //print("index path: \(indexPath.row) - \(indexPath) = \(imageLoadOperations.count)")
         return cell
@@ -247,26 +291,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
-//    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        
-//        let dictionary = scoreViewModelController.teamsDictGlobal
-//        
-//        guard let scoreModel = scoreViewModelController.fixture(at: indexPath.section, at: indexPath.row),//scoreViewModelController.competitionsSorted[scoreViewModelController.competitionsToday[indexPath.section]]?[indexPath.row],
-//            let imageLoadOperationHome = imageLoadOperations[(dictionary[scoreModel.homeTeam]?.logoURL)!],
-//            let imageLoadOperationAway = imageLoadOperations[(dictionary[scoreModel.awayTeam]?.logoURL)!]
-//            else { return
-//                print("doesn't work") }
-//        
-//        imageLoadOperationHome.cancel()
-//        imageLoadOperationAway.cancel()
-//        print("operation status isCancelled: \(imageLoadOperationHome.isCancelled) || operation status: \(imageLoadOperationAway.isCancelled)")
-//        //        print("operation status isFinished: \(imageLoadOperationHome.isFinished) || operation status: \(imageLoadOperationAway.isFinished)")
-//        //        print("operation status isExecuting: \(imageLoadOperationHome.isExecuting) || operation status: \(imageLoadOperationAway.isExecuting)")
-//        print("links for logo: \(dictionary[scoreModel.homeTeam]?.logoURL) || \(dictionary[scoreModel.awayTeam]?.logoURL)")
-//        
-//        //        imageLoadOperations.removeValue(forKey: (dictionary[scoreModel.homeTeam]?.logoURL)!)
-//        //        imageLoadOperations.removeValue(forKey: (dictionary[scoreModel.awayTeam]?.logoURL)!)
-//    }
 }
 
 // MARK: Prefetching data
