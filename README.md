@@ -1,7 +1,7 @@
 # today-football
 Swift 3.0, Xcode 8.xx
 
-My homeproject app for showing football results using some free demo API. Neither API, neither app are perfect, but I'm still working on it. Perhaps it would grow into something bigger and useful.
+Homeproject app for showing football results using some free demo API. Neither API, neither app are perfect, but I'm still working on it. Perhaps it would grow into something bigger and useful.
 
 Results and fixtures are from top-5 football national leagues: English Premiere League, Spanish La Liga, Italian Serie A, German Bundesliga, French Ligue 1 and European Champions League.
 
@@ -17,6 +17,7 @@ Technologies:
 - deep work with iOS UITableView, using sections, prefetching, customizing cells, etc.
 - GCD and NSOperations usage.
 
+PS Since European season is over by default app uses demo URL link with last results.
+
 ![ft3-7](https://cloud.githubusercontent.com/assets/23110283/24841992/f50f4210-1d98-11e7-927c-76390a500531.png)
-![ft3-8](https://cloud.githubusercontent.com/assets/23110283/24841978/c60de6ce-1d98-11e7-9cf0-a8f021381cef.png)
-![ft3-9](https://cloud.githubusercontent.com/assets/23110283/24841981/d01ee546-1d98-11e7-945b-c2942f382b4b.png)
+![footballdemo-02](https://cloud.githubusercontent.com/assets/23110283/26798014/b47d063a-4a37-11e7-925b-1c48d71d09dd.gif)
