@@ -19,5 +19,7 @@ Technologies:
 
 PS Since European season is over by default app uses demo URL link with last results.
 
+![footballdemo-02-2](https://cloud.githubusercontent.com/assets/23110283/26798273/86aa0ff4-4a38-11e7-8444-eb7e637a3422.gif)
+
+*****
 ![ft3-7](https://cloud.githubusercontent.com/assets/23110283/24841992/f50f4210-1d98-11e7-927c-76390a500531.png)
-![footballdemo-02](https://cloud.githubusercontent.com/assets/23110283/26798014/b47d063a-4a37-11e7-925b-1c48d71d09dd.gif)
