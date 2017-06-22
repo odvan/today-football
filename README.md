@@ -22,8 +22,8 @@ PS Since European season is over by default app uses demo URL link with last res
 ![footballdemo-02-2](https://cloud.githubusercontent.com/assets/23110283/26798273/86aa0ff4-4a38-11e7-8444-eb7e637a3422.gif)
 
 *****
-
 Live results look:
+
 ![22 may](https://cloud.githubusercontent.com/assets/23110283/26800293/740abed0-4a41-11e7-9898-40c30fe73e27.png)
 
 Added settings: which competitions to follow:
