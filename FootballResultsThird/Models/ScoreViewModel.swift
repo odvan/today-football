@@ -12,6 +12,7 @@ struct ScoreViewModel {
     
     let gameStatus: Game
     let gameResult: String
+    let gameHTResult: String?
     let homeTeam: String
     let awayTeam: String
     
@@ -28,6 +29,7 @@ struct ScoreViewModel {
         
         gameStatus = score.gameStatus
         gameResult = score.gameResult
+        gameHTResult = score.gameHTResult
         homeTeam = score.homeTeam
         awayTeam = score.awayTeam
         

@@ -12,10 +12,15 @@ import Foundation
 class ScoreViewModelController {
     
     // MARK: Constants & Variables
-    let demoURL = "http://api.football-data.org/v1/fixtures/?timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20&league=BL1,PL,SA,PD,FL1,CL"
-    //http://api.football-data.org/v1/fixtures/?timeFrameStart=2016-11-14&timeFrameEnd=2016-11-14&league=FAC
-    let baseURL = "http://api.football-data.org/v1/fixtures/?league=BL1,PD,PL,SA,FL1,CL&"
+    let demoURL = "http://api.football-data.org/v1/fixtures/?timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20&league="
+    let baseURL = "http://api.football-data.org/v1/fixtures/?league="
+    
+    /* "BL1,PD,PL,SA,FL1,CL&"
+     //?league=BL1,PL,SA,PD,FL1,CL&timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20
+     FAC: http://api.football-data.org/v1/fixtures/?timeFrameStart=2016-11-14&timeFrameEnd=2016-11-14&league=FAC
 
+     */
+    let token = "7dc5b5f70135455b9c5e1677c33920d2"
     let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
@@ -28,16 +33,17 @@ class ScoreViewModelController {
     
     // MARK: Main method for fetching data
     
-    func retrieveScores(from date: String, _ completionBlock: @escaping (_ success: Bool, _ error: NSError?) -> ()) {
+    func retrieveScores(from date: String, and competitions: String, _ completionBlock: @escaping (_ success: Bool, _ error: NSError?) -> ()) {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        guard let url = URL(string: demoURL) else {
+        guard let url = URL(string: demoURL + competitions) else { //demoURL + competitions  ///baseURL + competitions + date
             completionBlock(false, nil)
             return
         }
         
-        let urlRequest = URLRequest(url: url)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
         
         let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
@@ -84,7 +90,7 @@ class ScoreViewModelController {
                             strongSelf.allCompetitions.append(score.competition.name)
 
                             group.enter()
-                            strongSelf.fetchTeamsInfo(competitionURL: score.competitionTeamsURL) { teamsDict in
+                            Team.fetchTeamsInfo(competitionURL: score.competitionTeamsURL) { teamsDict in
                                 
                                 syncQueue.async {
                                     let teamsInfo = teamsDict
@@ -97,7 +103,6 @@ class ScoreViewModelController {
                             }
                         }
                     }
-                    
                 }
                 
                 group.notify(queue: finishQueue) {
@@ -138,50 +143,6 @@ class ScoreViewModelController {
         return competitionsSorted[competitionsToday[section]]?[index]
     }
     
-    // MARK: Method for fetching teams data
-    
-    func fetchTeamsInfo(competitionURL: String, completion: @escaping ([String : Team]) -> ()) {
-        
-        guard let url = URL(string: competitionURL)
-            else { return }
-        
-        let urlRequestInside = URLRequest(url: url)
-        
-        let taskInside = session.dataTask(with: urlRequestInside) { (data, response, error) in
-            
-            print("🔶 \(response!)")
-            guard let data = data else { return }
-            
-//            if error != nil {
-//                print(error!)
-//                return
-//            } else {
-//                let responceActual = response
-//                //print(responceActual!)
-//            }
-            
-            if let jsonTeams = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String : Any] {
-                
-                guard let teamsFrom = jsonTeams["teams"] as? [[String : Any]] else { return }
-                
-                var teamsDict: [String : Team] = [:]
-                
-                for team in teamsFrom {
-                    
-                    guard let name = team["name"] as? String else { return }
-                    let teamLogo = team["crestUrl"] as? String ?? ""
-                    let shortName = team["shortName"] as? String ?? name
-                    
-                    teamsDict[name] = Team(teamName: shortName, teamLogoURL: teamLogo)
-                }
-                
-                completion(teamsDict)
-                
-            }
-        }
-        taskInside.resume()
-        
-    }
     
     // MARK: Method for sorting fixtures
     
@@ -190,10 +151,8 @@ class ScoreViewModelController {
         var sorted: [String : [ScoreViewModel]] = [:]
         
         for competition in competitionsToday {
-            
             let sortScores = scoresToday.filter{ $0.competition.name == competition }
             sorted[competition] = sortScores
-            
         }
         
         return sorted

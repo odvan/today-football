@@ -57,7 +57,7 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         print("league is: \(league!)")
         if CompTableViewController.standingsCache[league!] == nil {

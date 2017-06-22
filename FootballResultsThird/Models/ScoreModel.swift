@@ -8,33 +8,6 @@
 
 import Foundation
 
-// MARK: Game status enum
-
-enum Game: String {
-    case scheduled = "SCHEDULED"
-    case timed = "TIMED"
-    case inPlay = "IN_PLAY"
-    case finished = "FINISHED"
-    case postponed = "POSTPONED"
-    case cancelled = "CANCELED"
-    case error = ""
-    case afterExtraTime = "AET"
- }
-
-// MARK: Team Model
-
-struct Team {
-    
-    let shortName: String
-    let logoURL: String
-    
-    init(teamName: String, teamLogoURL: String) {
-        
-        self.shortName = teamName
-        self.logoURL = teamLogoURL
-    }
-    
-}
 
 // MARK: Fixture Model
 
@@ -47,6 +20,7 @@ struct Score {
     
     let gameStatus: Game
     let gameResult: String
+    let gameHTResult: String?
     let homeTeam: String
     let awayTeam: String
     
@@ -58,10 +32,11 @@ struct Score {
     let odds: String
     let penalty: Penalty?
     
-    init(gameStatus: Game, gameResult: String, homeTeam: String, awayTeam: String, date: String, competition: String, odds: String, penalty: Penalty?) {
+    init(gameStatus: Game, gameResult: String, gameHTResult: String?, homeTeam: String, awayTeam: String, date: String, competition: String, odds: String, penalty: Penalty?) {
 
         self.gameStatus = gameStatus
         self.gameResult = gameResult
+        self.gameHTResult = gameHTResult
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
         
@@ -90,6 +65,10 @@ extension Score {
         var homeGoals = result?["goalsHomeTeam"] as? Int ?? 0
         var awayGoals = result?["goalsAwayTeam"] as? Int ?? 0
         
+        let resultHT = result?["halfTime"] as? [String : Any]
+        let homeGoalsHT = resultHT?["goalsHomeTeam"] as? Int
+        let awayGoalsHT = resultHT?["goalsAwayTeam"] as? Int
+        
         if let extraTime = result?["extraTime"] as? [String : Int] {
             homeGoals = extraTime["goalsHomeTeam"] ?? 0
             awayGoals = extraTime["goalsAwayTeam"] ?? 0
@@ -110,7 +89,6 @@ extension Score {
 
         }
     
-        
         guard let links = json["_links"] as? [String : Any],
             let competition = links["competition"] as? [String : String],
             let competitionURL = competition["href"]
@@ -123,6 +101,11 @@ extension Score {
         
         self.gameStatus = Game(rawValue: gameStatus)!
         self.gameResult = "\(homeGoals) - \(awayGoals)"
+        if (homeGoalsHT != nil), (awayGoalsHT != nil) {
+            self.gameHTResult = "(\(homeGoalsHT!) - \(awayGoalsHT!))"
+        } else {
+            self.gameHTResult = nil
+        }
         self.homeTeam = homeTeam
         self.awayTeam = awayTeam
         self.date = date

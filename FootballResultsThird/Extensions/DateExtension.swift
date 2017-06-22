@@ -8,6 +8,28 @@
 
 import Foundation
 
+let day: Double = 60 * 60 * 24
+
+enum FixturesTimeFrame {
+    
+    case yesterday
+    case today
+    case tomorrow
+    
+    var date: String {
+        
+        switch self {
+        case .yesterday:
+            return Date.gameFixture(timeInterval: -32*day) /////// поправить обратно!
+        case .today:
+            return Date.gameFixture(timeInterval: -31*day)
+        case .tomorrow:
+            return Date.gameFixture(timeInterval: -30*day)
+        }
+        
+    }
+}
+
 extension Date {
     
     // Method for computing game status
@@ -74,7 +96,7 @@ extension Date {
         return nil
     }
     
-    // Method for translating dates into API url request
+    // Method for translating dates into API url string request
 
     static func gameFixture(timeInterval: Double?) -> String {
         let today = Date()
@@ -85,14 +107,18 @@ extension Date {
         if let interval = timeInterval {
             let otherDate = today.addingTimeInterval(interval)
             let fixtureDateOutput = formatter.string(from: otherDate)
-            print("🔵 yesterday/tomorrow: \(fixtureDateOutput)")
-            return "timeFrameStart=\(fixtureDateOutput)&timeFrameEnd=\(fixtureDateOutput)"
+            if interval < 0 {
+                print("🔵 yesterday: \(fixtureDateOutput)")
+            } else {
+                print("🔵 tomorrow: \(fixtureDateOutput)")
+            }
+            return "&timeFrameStart=\(fixtureDateOutput)&timeFrameEnd=\(fixtureDateOutput)"
             
             
         } else {
             let fixtureDateOutput = formatter.string(from: today)
             print("🔵 today: \(fixtureDateOutput)")
-            return "timeFrameStart=\(fixtureDateOutput)&timeFrameEnd=\(fixtureDateOutput)"
+            return "&timeFrameStart=\(fixtureDateOutput)&timeFrameEnd=\(fixtureDateOutput)"
             
         }
     }

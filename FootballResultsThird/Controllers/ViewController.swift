@@ -8,35 +8,21 @@
 
 import UIKit
 
-let day: Double = 60 * 60 * 24
-
-enum FixturesTimeFrame {
-    
-    case yesterday
-    case today
-    case tomorrow
-    
-    var date: String {
-        
-        switch self {
-        case .yesterday:
-            return Date.gameFixture(timeInterval: -day)
-        case .today:
-            return Date.gameFixture(timeInterval: nil)
-        case .tomorrow:
-            return Date.gameFixture(timeInterval: day)
-        }
-        
-    }
-}
+// Global keys for UserDefaults settings
+let kForDefaultSelectedCompetitons = "Competitions selected for URL path"
+let kSelectedForSVC = "Competitions selected for Settings VC"
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    // MARK: Constants & Variables, mainly for caching fetched data
+    // MARK: Constants & Variables
     
     fileprivate let scoreViewModelController = ScoreViewModelController()
-    @IBOutlet weak var dateSC: UISegmentedControl!
 
+    @IBOutlet weak var dateSC: UISegmentedControl!
+    
+    let dSelectedCompetitions = "PD,SA,PL,FL1,BL1,CL"
+    var selectedCompetitions: String!
+    
     @IBOutlet weak var tableScore: UITableView!
     private let refreshControl = UIRefreshControl()
     // Cells ID
@@ -44,33 +30,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let noScore = "noCompetition"
     
     
+    // MARK: ViewController lifecycle methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        print("initial values: \(UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!)")
+        
+        if ((UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!) == nil) {
+            UserDefaults.standard.register(defaults: [kForDefaultSelectedCompetitons : dSelectedCompetitions])
+        }
         
         settingTitlesInSC()
         
         tableScore.prefetchDataSource = self
-        
-        scoreViewModelController.retrieveScores(from: FixturesTimeFrame.today.date) { [weak self] (success, error) in
-            
-            guard let strongSelf = self else { return }
-
-            if !success {
-                DispatchQueue.main.async {
-                    let title = "Error"
-                    if let error = error {
-                        strongSelf.showError(title, message: error.localizedDescription)
-                    } else {
-                        strongSelf.showError(title, message: NSLocalizedString("Can't retrieve results.", comment: "The message displayed when results can’t be retrieved."))
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    strongSelf.tableScore.reloadData()
-                }
-            }
-        }
         
         tableScore.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData(sender:)), for: .valueChanged)
@@ -83,43 +56,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        selectedCompetitions = UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!
+
+        dateFetchSC(sender: self)
+        
+    }
+    
+    
     // MARK: Refreshing data by pulling table
 
     func refreshData(sender: UIRefreshControl) {
         
-        var dateForTab: String?
-        
-        switch dateSC.selectedSegmentIndex {
-        case 0:
-            dateForTab = FixturesTimeFrame.yesterday.date
-        case 1:
-            dateForTab = FixturesTimeFrame.today.date
-        case 2:
-            dateForTab = FixturesTimeFrame.tomorrow.date
-        default:
-            break
-        }
-        
-        scoreViewModelController.retrieveScores(from: dateForTab!) { [weak self] (success, error) in
-            
-            guard let strongSelf = self else { return }
-            
-            if !success {
-                DispatchQueue.main.async {
-                    let title = "Error"
-                    if let error = error {
-                        strongSelf.showError(title, message: error.localizedDescription)
-                    } else {
-                        strongSelf.showError(title, message: NSLocalizedString("Can't retrieve results.", comment: "The message displayed when results can’t be retrieved."))
-                    }
-                }
-            } else {
-                DispatchQueue.main.async {
-                    strongSelf.tableScore.reloadData()
-                }
-            }
-        }
-        
+        dateFetchSC(sender: sender)
         refreshControl.endRefreshing()
     }
     
@@ -138,10 +89,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         var dateForTab: String?
         imageLoadQueue.cancelAllOperations()
-
+        
         switch dateSC.selectedSegmentIndex {
         case 0:
-         dateForTab = FixturesTimeFrame.yesterday.date
+            dateForTab = FixturesTimeFrame.yesterday.date
         case 1:
             dateForTab = FixturesTimeFrame.today.date
         case 2:
@@ -150,7 +101,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             break
         }
         
-        scoreViewModelController.retrieveScores(from: dateForTab!) { [weak self] (success, error) in
+        scoreViewModelController.retrieveScores(from: dateForTab!, and: selectedCompetitions) { [weak self] (success, error) in
             
             guard let strongSelf = self else { return }
             
@@ -172,6 +123,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     }
     
+    
     // MARK: Methods for navigation to Standings table
     
     func showTable(sender: TableButton) {
@@ -186,7 +138,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        nextViewController.navBar.topItem?.title = scoreViewModelController.competitionsToday[sender.section!]
 //        nextViewController.teamsDictionary = scoreViewModelController.teamsDictGlobal
 
-//        self.present(nextViewController, animated:true, completion:nil)
+//        self.present(nextViewController, animated: true, completion: nil)
         
         print("🔴🔴🔴 table for \(scoreViewModelController.competitionsToday[sender.section!]) will be added later")
 
@@ -203,6 +155,42 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             standingsVC.teamsDictionary = scoreViewModelController.teamsDictGlobal
             
         }
+        
+        if segue.identifier == "matchDetails" {
+            let dictionary = scoreViewModelController.teamsDictGlobal
+            let matchDetailsVC = segue.destination as! MatchDetailsViewController
+            matchDetailsVC.title = "Match Details"
+            if let scoreModel = scoreViewModelController.fixture(at: (sender as! IndexPath).section, at: (sender as! IndexPath).row) {
+                matchDetailsVC.score = scoreModel
+                
+                let cell = tableScore.cellForRow(at: sender as! IndexPath) as! ScoreCell
+                matchDetailsVC.homeTeamName = cell.homeTeam.text
+                matchDetailsVC.awayTeamName = cell.awayTeam.text
+                matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
+                matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
+                
+            }
+        }
+        
+    }
+    
+    @IBAction func unwindWithSelectedCompetitions(segue:UIStoryboardSegue) {
+                
+        print("unwing segue")
+    }
+    
+    // MARK: Small method for creating Table's footer programmatically
+    
+    private func footer(for table: UITableView) -> UIView {
+        
+        let footer = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44))
+        footer.backgroundColor = UIColor.groupTableViewBackground
+        let footerlabel = UILabel(frame: CGRect(x: 12, y: 16, width: footer.frame.width - 24, height: 12))
+        footerlabel.text = "* Team won by penalty."
+        footerlabel.font = UIFont(name: "AvenirNext-Medium", size: 10)
+        footer.addSubview(footerlabel)
+        
+        return footer
     }
 
     
@@ -254,39 +242,55 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        performSegue(withIdentifier: "matchDetails", sender: indexPath)
+
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if scoreViewModelController.competitionsToday.count != 0 {
-        let cell = tableScore.dequeueReusableCell(withIdentifier: score, for: indexPath) as! ScoreCell
-        let dictionary = scoreViewModelController.teamsDictGlobal
+            let cell = tableScore.dequeueReusableCell(withIdentifier: score, for: indexPath) as! ScoreCell
+            let dictionary = scoreViewModelController.teamsDictGlobal
+            
+            if let scoreModel = scoreViewModelController.fixture(at: indexPath.section, at: indexPath.row) {
+                
+                cell.configure(scoreModel)
+                
+                cell.homeTeam.text = dictionary[scoreModel.homeTeam]?.shortName
+                cell.awayTeam.text = dictionary[scoreModel.awayTeam]?.shortName
+                
+                cell.homeTeamLogo.updateLogo(link: dictionary[scoreModel.homeTeam]?.logoURL)
+                cell.operG = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
+                cell.awayTeamLogo.updateLogo(link: dictionary[scoreModel.awayTeam]?.logoURL)
+                cell.operTwoG = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
+                
+                if scoreModel.penalty?.hashValue == 0 {
+                    
+                    cell.homeTeam.text! += "*"
+                    //footer.isHidden = false
+                    tableScore.tableFooterView = footer(for: tableScore)
+                }
+                if scoreModel.penalty?.hashValue == 1 {
+                    
+                    cell.awayTeam.text! += "*"
+                    //footer.isHidden = false
+                    tableScore.tableFooterView = footer(for: tableScore)
 
-        if let scoreModel = scoreViewModelController.fixture(at: indexPath.section, at: indexPath.row) {
-            
-            cell.configure(scoreModel)
-            
-            cell.homeTeam.text = dictionary[scoreModel.homeTeam]?.shortName
-            cell.awayTeam.text = dictionary[scoreModel.awayTeam]?.shortName
-        
-            cell.homeTeamLogo.updateLogo(link: dictionary[scoreModel.homeTeam]?.logoURL)
-            cell.operG = ImageLoadOperation(url: (dictionary[scoreModel.homeTeam]?.logoURL)!)
-            cell.awayTeamLogo.updateLogo(link: dictionary[scoreModel.awayTeam]?.logoURL)
-            cell.operTwoG = ImageLoadOperation(url: (dictionary[scoreModel.awayTeam]?.logoURL)!)
-            
-            if scoreModel.penalty?.hashValue == 0 {
-                cell.homeTeam.text! += "*"
+//                    tableScore.tableFooterView = footer
+                }
+                
             }
-            if scoreModel.penalty?.hashValue == 1 {
-                cell.awayTeam.text! += "*"
-            }
-        }
-        //print("index path: \(indexPath.row) - \(indexPath) = \(imageLoadOperations.count)")
-        return cell
+            
+            //print("index path: \(indexPath.row) - \(indexPath) = \(imageLoadOperations.count)")
+            return cell
             
         } else {
             
             let cell = tableScore.dequeueReusableCell(withIdentifier: noScore, for: indexPath)
             return cell
-
+            
         }
         
     }

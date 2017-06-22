@@ -54,7 +54,7 @@ class ScoreCell: UITableViewCell {
             liveGameSign.alpha = 1.0
         }
 
-        isUserInteractionEnabled = false  // Cell selection is not required for this sample, maybe later
+        //isUserInteractionEnabled = false  // Cell selection is not required for this sample, maybe later
     }
     
     override func prepareForReuse() {
