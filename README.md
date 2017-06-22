@@ -23,10 +23,9 @@ PS Since European season is over by default app uses demo URL link with last res
 
 *****
 Live results look:
-
 ![22 may](https://cloud.githubusercontent.com/assets/23110283/26800293/740abed0-4a41-11e7-9898-40c30fe73e27.png)
 
-Added settings: which competitions to follow:
+Added settings: which competitions to follow
 ![ft_newbutton](https://user-images.githubusercontent.com/23110283/27452771-873b0cf4-579c-11e7-9f6b-a049107fb4fd.png)
 
 ![ft_settings](https://user-images.githubusercontent.com/23110283/27452773-88910f40-579c-11e7-9c9b-90f6c39c9416.png)
