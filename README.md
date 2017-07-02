@@ -34,6 +34,6 @@ Added settings: competitions to follow
 Leagues table look:
 ![ft_table](https://user-images.githubusercontent.com/23110283/27774312-ba8e39d8-5f98-11e7-9ef3-d5e20162c45f.png)
 
-Match details look:
+Match details look (only demo, API doesn't provide detailed stats yet):
 ![ft_matchdetails7](https://user-images.githubusercontent.com/23110283/27774313-beb08fc0-5f98-11e7-94af-df185fbda5e6.png)
 
