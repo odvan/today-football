@@ -14,6 +14,7 @@ class ScoreViewModelController {
     // MARK: Constants & Variables
     let demoURL = "http://api.football-data.org/v1/fixtures/?timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20&league="
     let baseURL = "http://api.football-data.org/v1/fixtures/?league="
+    let demoSummerURL = "http://api.football-data.org/v1/competitions/436/fixtures/?timeFrameStart=2017-05-19&timeFrameEnd=2017-05-30"
     
     /* "BL1,PD,PL,SA,FL1,CL&"
      //?league=BL1,PL,SA,PD,FL1,CL&timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20
@@ -37,7 +38,7 @@ class ScoreViewModelController {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        guard let url = URL(string: demoURL + competitions) else { //demoURL + competitions  ///baseURL + competitions + date
+        guard let url = URL(string: demoSummerURL) else { //demoURL + competitions  ///baseURL + competitions + date
             completionBlock(false, nil)
             return
         }

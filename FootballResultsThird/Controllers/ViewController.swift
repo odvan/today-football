@@ -9,7 +9,7 @@
 import UIKit
 
 // Global keys for UserDefaults settings
-let kForDefaultSelectedCompetitons = "Competitions selected for URL path"
+let kSelectedCompetitonsForUrlPath = "Competitions selected for URL path"
 let kSelectedForSVC = "Competitions selected for Settings VC"
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -35,10 +35,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        print("initial values: \(UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!)")
+        print("initial values: \(UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!)")
         
-        if ((UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!) == nil) {
-            UserDefaults.standard.register(defaults: [kForDefaultSelectedCompetitons : dSelectedCompetitions])
+        if ((UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!) == nil) {
+            UserDefaults.standard.register(defaults: [kSelectedCompetitonsForUrlPath : dSelectedCompetitions])
         }
         
         settingTitlesInSC()
@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        selectedCompetitions = UserDefaults.standard.object(forKey: kForDefaultSelectedCompetitons) as! String!
+        selectedCompetitions = UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!
 
         dateFetchSC(sender: self)
         
@@ -157,6 +157,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         if segue.identifier == "matchDetails" {
+            
             let dictionary = scoreViewModelController.teamsDictGlobal
             let matchDetailsVC = segue.destination as! MatchDetailsViewController
             matchDetailsVC.title = "Match Details"

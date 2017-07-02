@@ -29,10 +29,12 @@ struct Score {
     let competition: Competition
     let competitionTeamsURL: String
     
+    let matchDay: String
+    
     let odds: String
     let penalty: Penalty?
     
-    init(gameStatus: Game, gameResult: String, gameHTResult: String?, homeTeam: String, awayTeam: String, date: String, competition: String, odds: String, penalty: Penalty?) {
+    init(gameStatus: Game, gameResult: String, gameHTResult: String?, homeTeam: String, awayTeam: String, date: String, competition: String, odds: String, penalty: Penalty?, matchDay: String) {
 
         self.gameStatus = gameStatus
         self.gameResult = gameResult
@@ -48,6 +50,7 @@ struct Score {
         self.odds = odds
         
         self.penalty = penalty
+        self.matchDay = matchDay
     }
     
 }
@@ -60,6 +63,8 @@ extension Score {
         let awayTeam = json["awayTeamName"] as? String ?? ""
         let date = json["date"] as? String ?? ""
         var gameStatus = json["status"] as? String ?? ""
+        
+        let matchDay = json["matchday"] as? Int
         
         let result = json["result"] as? [String : Any]
         var homeGoals = result?["goalsHomeTeam"] as? Int ?? 0
@@ -114,5 +119,7 @@ extension Score {
         self.odds = "Home: \(homeWin) ● Draw: \(draw) ● Away: \(awayWin)"
         
         self.penalty = penalty
+        self.matchDay = "Matchweek \(matchDay!)"
+
     }
 }

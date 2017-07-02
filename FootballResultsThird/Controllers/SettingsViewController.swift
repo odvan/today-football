@@ -98,7 +98,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             UserDefaults.standard.set(selectedCompetitionsDictionary, forKey: kSelectedForSVC)
             selectedCompetitions = selectedCompetitionsDictionary.filter{ $0.1 == true }.map{ $0.0 }
             let selectedCompetitionsForURLPath = Competition.creatingStringForUrlPath(from: selectedCompetitions)
-            UserDefaults.standard.set(selectedCompetitionsForURLPath, forKey: kForDefaultSelectedCompetitons)
+            UserDefaults.standard.set(selectedCompetitionsForURLPath, forKey: kSelectedCompetitonsForUrlPath)
             
             print("🆔 \(selectedCompetitionsForURLPath)")
         }

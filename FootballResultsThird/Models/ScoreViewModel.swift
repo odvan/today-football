@@ -21,6 +21,8 @@ struct ScoreViewModel {
     let competition: Competition
     let competitionTeamsURL: String
     
+    let matchDay: String
+    
     let odds: String
     
     let penalty: Penalty?
@@ -33,6 +35,7 @@ struct ScoreViewModel {
         homeTeam = score.homeTeam
         awayTeam = score.awayTeam
         
+        matchDay = score.matchDay
         date = score.date
         
         competition = score.competition
