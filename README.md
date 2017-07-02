@@ -1,7 +1,7 @@
 # today-football
 Swift 3.0, Xcode 8.xx
 
-Homeproject app for showing football results using some free demo API. Neither API, neither app are perfect, but I'm still working on it. Perhaps it would grow into something bigger and useful.
+Homeproject app for showing football results using football-data.org API. Perhaps it would grow into something bigger and useful.
 
 Results and fixtures are from top-5 football national leagues: English Premiere League, Spanish La Liga, Italian Serie A, German Bundesliga, French Ligue 1 and European Champions League.
 
@@ -26,7 +26,14 @@ Live results look:
 
 ![22 may](https://cloud.githubusercontent.com/assets/23110283/26800293/740abed0-4a41-11e7-9898-40c30fe73e27.png)
 
-Added settings: which competitions to follow
+Added settings: competitions to follow
 ![ft_newbutton](https://user-images.githubusercontent.com/23110283/27452771-873b0cf4-579c-11e7-9f6b-a049107fb4fd.png)
 
 ![ft_settings](https://user-images.githubusercontent.com/23110283/27452773-88910f40-579c-11e7-9c9b-90f6c39c9416.png)
+
+Leagues table look:
+![ft_table](https://user-images.githubusercontent.com/23110283/27774312-ba8e39d8-5f98-11e7-9ef3-d5e20162c45f.png)
+
+Match details look:
+![ft_matchdetails7](https://user-images.githubusercontent.com/23110283/27774313-beb08fc0-5f98-11e7-94af-df185fbda5e6.png)
+
