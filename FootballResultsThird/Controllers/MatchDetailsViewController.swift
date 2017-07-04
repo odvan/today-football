@@ -22,7 +22,7 @@ class MatchDetailsViewController: UIViewController, UITableViewDelegate, UITable
     let cellFirst = "matchMainInfo"
     
     //
-    /* Only for demo purpose - actual API doesn't provide match info and statistics yet */
+    /* Only for demo purpose - actual API doesn't provide match detailed info and statistics yet */
     //
     var matchDetailsSectionsName: [String] = ["Matchweek", "Info", "Statistic"]
     let cellInfoID = "matchInfo"
@@ -49,12 +49,14 @@ class MatchDetailsViewController: UIViewController, UITableViewDelegate, UITable
     let matchStatEight: MatchStats = MatchStats(statEvent: Statistics.goalK, teamHome: "7", teamAway: "7", overallNumber: 14)
     
     //
-    /* Only for demo purpose - actual API doesn't provide match info and statistics yet */
+    /* Only for demo purpose - actual API doesn't provide match detailed info and statistics yet */
     //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        navigationItem.leftItemsSupplementBackButton = true
         
         matchInfoArray = [matchInfoOne, matchInfoTwo, matchInfoThree, matchInfoFour, matchInfoFive, matchInfoSix]
         matchStatsArray = [matchStatOne, matchStatTwo, matchStatThree, matchStatFour, matchStatFive, matchStatSix, matchStatSeven, matchStatEight]
@@ -120,6 +122,8 @@ class MatchDetailsViewController: UIViewController, UITableViewDelegate, UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 136
+        } else if indexPath.section == 2 {
+            return 40
         } else {
             return 32
         }
@@ -145,6 +149,9 @@ class MatchDetailsViewController: UIViewController, UITableViewDelegate, UITable
             if let info = matchInfoArray?[indexPath.row] {
                 //print(info.awayPlayer ?? "no away player")
                 cell.configureI(info)
+                if indexPath.row % 2 != 0 {
+                    cell.backgroundColor = UIColor(red: 102/255, green: 255/255, blue: 204/255, alpha: 0.1)
+                }
             }
             return cell
             

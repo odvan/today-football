@@ -12,7 +12,7 @@ import UIKit
 let kSelectedCompetitonsForUrlPath = "Competitions selected for URL path"
 let kSelectedForSVC = "Competitions selected for Settings VC"
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISplitViewControllerDelegate {
     
     // MARK: Constants & Variables
     
@@ -34,9 +34,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        splitViewController?.delegate = self
+        splitViewController?.maximumPrimaryColumnWidth = CGFloat.greatestFiniteMagnitude
+        splitViewController?.preferredPrimaryColumnWidthFraction = 0.5
+
         print("initial values: \(UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!)")
-        
         if ((UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!) == nil) {
             UserDefaults.standard.register(defaults: [kSelectedCompetitonsForUrlPath : dSelectedCompetitions])
         }
@@ -159,17 +162,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if segue.identifier == "matchDetails" {
             
             let dictionary = scoreViewModelController.teamsDictGlobal
-            let matchDetailsVC = segue.destination as! MatchDetailsViewController
+            let matchDetailsNC = segue.destination as! UINavigationController
+            let matchDetailsVC = matchDetailsNC.topViewController as! MatchDetailsViewController
             matchDetailsVC.title = "Match Details"
-            if let scoreModel = scoreViewModelController.fixture(at: (sender as! IndexPath).section, at: (sender as! IndexPath).row) {
-                matchDetailsVC.score = scoreModel
-                
-                let cell = tableScore.cellForRow(at: sender as! IndexPath) as! ScoreCell
-                matchDetailsVC.homeTeamName = cell.homeTeam.text
-                matchDetailsVC.awayTeamName = cell.awayTeam.text
-                matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
-                matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
-                
+            if let index = tableScore.indexPathForSelectedRow {
+                if let scoreModel = scoreViewModelController.fixture(at: index.section, at: index.row) {
+                    matchDetailsVC.score = scoreModel
+                    
+                    let cell = tableScore.cellForRow(at: index) as! ScoreCell
+                    matchDetailsVC.homeTeamName = cell.homeTeam.text
+                    matchDetailsVC.awayTeamName = cell.awayTeam.text
+                    matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
+                    matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
+                }
             }
         }
         
@@ -178,6 +183,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBAction func unwindWithSelectedCompetitions(segue:UIStoryboardSegue) {
                 
         print("unwing segue")
+    }
+    
+    // MARK: UISplitViewControllerDelegate
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+
+        print(" 💔 💔 💔 💔")
+        return true
     }
     
     // MARK: Small method for creating Table's footer programmatically
@@ -245,7 +258,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        performSegue(withIdentifier: "matchDetails", sender: indexPath)
+//        performSegue(withIdentifier: "matchDetails", sender: indexPath)
 
     }
     

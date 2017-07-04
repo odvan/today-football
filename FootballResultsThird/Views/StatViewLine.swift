@@ -23,21 +23,21 @@ class StatViewLine: UIView {
         let width = rect.width
         let height = rect.height
         
-        let backlinePath = UIBezierPath()
-        backlinePath.lineWidth = 8.0
-        
-        let backStartPoint = CGPoint(x: 0, y: height/2)
-        let backEndPoint = CGPoint(x: width, y: height/2)
-        
-        backlinePath.move(to: backStartPoint)
-        backlinePath.addLine(to: backEndPoint)
-        
-        let backColor = UIColor(red: 102/255, green: 255/255, blue: 204/255, alpha: 0.3)
-        backColor.setStroke()
-       // backlinePath.stroke()
+//        let backlinePath = UIBezierPath()
+//        backlinePath.lineWidth = 8.0
+//        
+//        let backStartPoint = CGPoint(x: 0, y: height/2)
+//        let backEndPoint = CGPoint(x: width, y: height/2)
+//        
+//        backlinePath.move(to: backStartPoint)
+//        backlinePath.addLine(to: backEndPoint)
+//        
+//        let backColor = UIColor(red: 102/255, green: 255/255, blue: 204/255, alpha: 0.3)
+//        backColor.setStroke()
+//       // backlinePath.stroke()
         
         let linePath = UIBezierPath()
-        linePath.lineWidth = 8.0
+        linePath.lineWidth = 10.0
         
         let color = UIColor(red: 102/255, green: 255/255, blue: 204/255, alpha: 1.0)
         color.setStroke()
