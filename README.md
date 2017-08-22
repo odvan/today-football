@@ -1,5 +1,5 @@
 # today-football
-Swift 3.0, Xcode 8.xx
+Swift 3.0, Xcode 8.xx || all iPhones
 
 Homeproject app for showing football results using football-data.org API. Perhaps it would grow into something bigger and useful.
 
@@ -32,9 +32,11 @@ Added settings: competitions to follow
 ![ft_settings](https://user-images.githubusercontent.com/23110283/27452773-88910f40-579c-11e7-9c9b-90f6c39c9416.png)
 
 Leagues table look:
-![ft_table](https://user-images.githubusercontent.com/23110283/27774312-ba8e39d8-5f98-11e7-9ef3-d5e20162c45f.png)
+![ft_table](https://user-images.githubusercontent.com/23110283/27887226-48aeccf4-61e8-11e7-9f39-9ce90ac5f6e9.png)
 
 Match details look (stats and info only demo, API doesn't provide detailed stats yet):
-![ft_matchdetails8](https://user-images.githubusercontent.com/23110283/27843838-7f63750a-6121-11e7-85f1-32d1c67c706e.png)
+![ft_matchdetails8](https://user-images.githubusercontent.com/23110283/27887251-76498e6a-61e8-11e7-9766-113cf7e7f891.png)
 
+Added UISplitController, now it splitting screen on iPhones Plus:
+![ft_splitvciphone](https://user-images.githubusercontent.com/23110283/27887229-4bd06b0e-61e8-11e7-8e5d-a98942c61fdc.png)
 
