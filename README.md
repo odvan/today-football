@@ -17,7 +17,7 @@ Technologies:
 - deep work with iOS UITableView, using sections, prefetching, customizing cells, etc.
 - GCD and NSOperations usage.
 
-PS Since European season is over by default app uses demo URL link with last results.
+PS Since European seasons 2017-2018 started app uses new endpoints.
 
 ![footballdemo-02-2](https://cloud.githubusercontent.com/assets/23110283/26798273/86aa0ff4-4a38-11e7-8444-eb7e637a3422.gif)
 
