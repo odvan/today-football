@@ -10,33 +10,33 @@ import Foundation
 
 enum Competition: String {
    
-    case PD = "http://api.football-data.org/v1/competitions/436"
-    case PL = "http://api.football-data.org/v1/competitions/426"
-    case SA = "http://api.football-data.org/v1/competitions/438"
-    case FL1 = "http://api.football-data.org/v1/competitions/434"
-    case BL1 = "http://api.football-data.org/v1/competitions/430"
+    case PD = "http://api.football-data.org/v1/competitions/455"
+    case PL = "http://api.football-data.org/v1/competitions/445"
+    case SA = "http://api.football-data.org/v1/competitions/456"
+    case FL1 = "http://api.football-data.org/v1/competitions/450"
+    case BL1 = "http://api.football-data.org/v1/competitions/452"
     case CL = "http://api.football-data.org/v1/competitions/440"
     
-    case FAC = "http://api.football-data.org/v1/competitions/429"
+    //case FAC = "http://api.football-data.org/v1/competitions/429"
     
     var name: String {
         
         switch self {
         case .PD:
-            return "🇪🇸 Primera Division 2016/2017"
+            return "🇪🇸 Primera Division 2017/2018"
         case .SA:
-            return "🇮🇹 Serie A 2016/2017"
+            return "🇮🇹 Serie A 2017/2018"
         case .PL:
-            return "🇬🇧 Premier League 2016/2017"
+            return "🇬🇧 Premier League 2017/2018"
         case .FL1:
-            return "🇫🇷 Ligue 1 2016/2017"
+            return "🇫🇷 Ligue 1 2017/2018"
         case .BL1:
-            return "🇩🇪 Bundesliga 2016/2017"
+            return "🇩🇪 Bundesliga 2017/2018"
         case .CL:
-            return "🇪🇺 Champions League 2016/2017"
+            return "🇪🇺 Champions League 2017/2018"
             
-        case .FAC:
-            return "FA Cup 2016/2017"
+//        case .FAC:
+//            return "FA Cup 2016/2017"
        
         }
     }
@@ -65,20 +65,20 @@ enum Competition: String {
                 case Competition.CL.name:
                     return "CL,"
                     
-                case Competition.FAC.name:
-                    return "FAC,"
+                    //                case Competition.FAC.name:
+                    //                    return "FAC,"
                     
                 default:
                     return "Error"
                 }
             }
-
-        stringFromComp += compIndex
+            
+            stringFromComp += compIndex
+        }
+        stringFromComp.characters.removeLast()
+        
+        print("🆔🆔🆔 selected comp string: \(stringFromComp)")
+        return stringFromComp
     }
-    stringFromComp.characters.removeLast()
-    
-    print("🆔🆔🆔 selected comp string: \(stringFromComp)")
-    return stringFromComp
-}
     
 }

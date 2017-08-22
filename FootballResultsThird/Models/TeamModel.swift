@@ -46,17 +46,14 @@ extension Team {
     static func fetchTeamsInfo(competitionURL: String, completion: @escaping ([String : Team]) -> ()) {
         
         //        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        let token = "7dc5b5f70135455b9c5e1677c33920d2"
-        let session = URLSession.shared
-        
+                
         guard let url = URL(string: competitionURL)
             else { return }
         
         var urlRequestInside = URLRequest(url: url)
-        urlRequestInside.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        urlRequestInside.setValue(Config.token, forHTTPHeaderField: "X-Auth-Token")
         
-        let taskFetchingTeams = session.dataTask(with: urlRequestInside) { (data, response, error) in
+        let taskFetchingTeams = Config.session.dataTask(with: urlRequestInside) { (data, response, error) in
             
             print("🔶 \(response!)")
             

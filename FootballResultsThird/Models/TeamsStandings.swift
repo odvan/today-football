@@ -86,16 +86,14 @@ extension TeamsStandings {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
 
         let leagueTablePath = "/leagueTable"
-        let token = "7dc5b5f70135455b9c5e1677c33920d2"
-        let session = URLSession.shared
         
         guard let url = URL(string: league + leagueTablePath)
             else { return }
         
         var urlRequestStandings = URLRequest(url: url)
-        urlRequestStandings.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        urlRequestStandings.setValue(Config.token, forHTTPHeaderField: "X-Auth-Token")
         
-        session.dataTask(with: urlRequestStandings) { (data, response, error) in
+        Config.session.dataTask(with: urlRequestStandings) { (data, response, error) in
             
             print("✅✅✅ standings response: \(response!)")
             

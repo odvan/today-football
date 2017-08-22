@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C317018E1F0DA1CC00E528A2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C317018D1F0DA1CC00E528A2 /* Constants.swift */; };
 		C3249C631E6C6D4A00A7381F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3249C621E6C6D4A00A7381F /* AppDelegate.swift */; };
 		C3249C6A1E6C6D4A00A7381F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3249C691E6C6D4A00A7381F /* Assets.xcassets */; };
 		C3249C6D1E6C6D4A00A7381F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3249C6B1E6C6D4A00A7381F /* LaunchScreen.storyboard */; };
@@ -59,6 +60,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C317018D1F0DA1CC00E528A2 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C3249C5F1E6C6D4A00A7381F /* FootballResultsThird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FootballResultsThird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3249C621E6C6D4A00A7381F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3249C691E6C6D4A00A7381F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				C3249C621E6C6D4A00A7381F /* AppDelegate.swift */,
+				C317018D1F0DA1CC00E528A2 /* Constants.swift */,
 				C3A5FDE71EB7CA8200EEB0A2 /* Main.storyboard */,
 				C35472551EB7BB1B00D37EE0 /* Controllers */,
 				C359B97F1E6F2565008D5269 /* Models */,
@@ -324,6 +327,7 @@
 				C3690F8E1ECD050C00C688A3 /* CustomImageView.swift in Sources */,
 				C34911BD1EF94F6E00F91ECD /* SettingsViewController.swift in Sources */,
 				C366DE051F0828CB009F799A /* MatchStats.swift in Sources */,
+				C317018E1F0DA1CC00E528A2 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

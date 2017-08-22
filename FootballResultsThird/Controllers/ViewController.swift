@@ -8,10 +8,6 @@
 
 import UIKit
 
-// Global keys for UserDefaults settings
-let kSelectedCompetitonsForUrlPath = "Competitions selected for URL path"
-let kSelectedForSVC = "Competitions selected for Settings VC"
-
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISplitViewControllerDelegate {
     
     // MARK: Constants & Variables
@@ -25,9 +21,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var tableScore: UITableView!
     private let refreshControl = UIRefreshControl()
+    
     // Cells ID
     let score = "scoreCell"
     let noScore = "noCompetition"
+    var rowSelectedAtLeastOnce = false
+    var collapseDetailViewController = true
     
     
     // MARK: ViewController lifecycle methods
@@ -36,12 +35,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
 
         splitViewController?.delegate = self
-        splitViewController?.maximumPrimaryColumnWidth = CGFloat.greatestFiniteMagnitude
+        splitViewController?.maximumPrimaryColumnWidth = self.view.frame.size.width
         splitViewController?.preferredPrimaryColumnWidthFraction = 0.5
-
-        print("initial values: \(UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!)")
-        if ((UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!) == nil) {
-            UserDefaults.standard.register(defaults: [kSelectedCompetitonsForUrlPath : dSelectedCompetitions])
+        
+        print("initial values: \(UserDefaults.standard.object(forKey: GlobalKey.selectedCompetitonsForUrlPath))")
+        if UserDefaults.standard.object(forKey: GlobalKey.selectedCompetitonsForUrlPath) == nil {
+            UserDefaults.standard.register(defaults: [GlobalKey.selectedCompetitonsForUrlPath : dSelectedCompetitions])
         }
         
         settingTitlesInSC()
@@ -51,6 +50,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableScore.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(ViewController.refreshData(sender:)), for: .valueChanged)
         
+        print("\(self.view.frame.size.width), collapsed: \(splitViewController?.isCollapsed)")
+        if self.view.frame.size.width == 736 {
+            firstSegue()
+        }
+//        self.tableScore.contentInset = UIEdgeInsetsMake(64,0,0,0)
+        //NotificationCenter.default.addObserver(self, selector: #selector(ViewController.firstSegue), name: .UIViewControllerShowDetailTargetDidChange, object: nil)
         //self.tableScore.delaysContentTouches = false
     }
 
@@ -62,10 +67,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        selectedCompetitions = UserDefaults.standard.object(forKey: kSelectedCompetitonsForUrlPath) as! String!
+        selectedCompetitions = UserDefaults.standard.object(forKey: GlobalKey.selectedCompetitonsForUrlPath) as! String!
 
         dateFetchSC(sender: self)
         
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print("view bounds:\(view.bounds.height)|\(view.bounds.width)")
+        if view.bounds.height == 370 && rowSelectedAtLeastOnce == false {
+            firstSegue()
+        }
     }
     
     
@@ -143,7 +156,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
 //        self.present(nextViewController, animated: true, completion: nil)
         
-        print("🔴🔴🔴 table for \(scoreViewModelController.competitionsToday[sender.section!]) will be added later")
+        //print("🔴🔴🔴 table for \(scoreViewModelController.competitionsToday[sender.section!]) will be added later")
 
     }
     
@@ -151,29 +164,43 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if segue.identifier == "connectionToCompTable" {
             
-            let standingsVC = segue.destination as! CompTableViewController
-            let _ = standingsVC.view
-            standingsVC.navBar.topItem?.title = scoreViewModelController.competitionsToday[(sender as! TableButton).section!]
-            standingsVC.league = scoreViewModelController.competitionsLinks[(sender as! TableButton).section!]
-            standingsVC.teamsDictionary = scoreViewModelController.teamsDictGlobal
-            
+            if let standingsVC = segue.destination as? CompTableViewController {
+                let _ = standingsVC.view
+                standingsVC.navBar.topItem?.title = scoreViewModelController.competitionsToday[(sender as! TableButton).section!]
+                standingsVC.league = scoreViewModelController.competitionsLinks[(sender as! TableButton).section!]
+                standingsVC.teamsDictionary = scoreViewModelController.teamsDictGlobal
+            }
         }
         
         if segue.identifier == "matchDetails" {
             
-            let dictionary = scoreViewModelController.teamsDictGlobal
-            let matchDetailsNC = segue.destination as! UINavigationController
-            let matchDetailsVC = matchDetailsNC.topViewController as! MatchDetailsViewController
-            matchDetailsVC.title = "Match Details"
-            if let index = tableScore.indexPathForSelectedRow {
-                if let scoreModel = scoreViewModelController.fixture(at: index.section, at: index.row) {
-                    matchDetailsVC.score = scoreModel
-                    
-                    let cell = tableScore.cellForRow(at: index) as! ScoreCell
-                    matchDetailsVC.homeTeamName = cell.homeTeam.text
-                    matchDetailsVC.awayTeamName = cell.awayTeam.text
-                    matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
-                    matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
+            if  let matchDetailsNC = segue.destination as? UINavigationController,
+                let matchDetailsVC = matchDetailsNC.topViewController as? MatchDetailsViewController {
+                
+                rowSelectedAtLeastOnce = true
+                let dictionary = scoreViewModelController.teamsDictGlobal
+                
+                matchDetailsVC.title = "Match Details"
+                if let indexFirst = sender as? IndexPath {
+                    if let cell = tableScore.cellForRow(at: indexFirst) as? ScoreCell {
+                        if let scoreModel = scoreViewModelController.fixture(at: indexFirst.section, at: indexFirst.row) {
+                            matchDetailsVC.score = scoreModel
+                            matchDetailsVC.homeTeamName = cell.homeTeam.text
+                            matchDetailsVC.awayTeamName = cell.awayTeam.text
+                            matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
+                            matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
+                        }
+                    }
+                } else if let index = tableScore.indexPathForSelectedRow {
+                    print("✝️ index \(index)")
+                    if let scoreModel = scoreViewModelController.fixture(at: index.section, at: index.row) {
+                        matchDetailsVC.score = scoreModel
+                        let cell = tableScore.cellForRow(at: index) as! ScoreCell
+                        matchDetailsVC.homeTeamName = cell.homeTeam.text
+                        matchDetailsVC.awayTeamName = cell.awayTeam.text
+                        matchDetailsVC.homeLogo = dictionary[scoreModel.homeTeam]?.logoURL
+                        matchDetailsVC.awayLogo = dictionary[scoreModel.awayTeam]?.logoURL
+                    }
                 }
             }
         }
@@ -190,7 +217,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
 
         print(" 💔 💔 💔 💔")
-        return true
+        return collapseDetailViewController
+    }
+    
+    // Show first cell in DetailView
+    func firstSegue() {
+        rowSelectedAtLeastOnce = true
+        print("It's iPhone Plus in landscape mode, collapsed: \(splitViewController?.isCollapsed), view bounds:\(view.bounds.height)|\(view.bounds.width)")
+        let initialIndexPath = IndexPath(row: 0, section: 0)
+        self.tableScore.selectRow(at: initialIndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+        
+        let delayInSeconds = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) {
+            self.performSegue(withIdentifier: "matchDetails", sender: initialIndexPath)
+        }
+        collapseDetailViewController = false
     }
     
     // MARK: Small method for creating Table's footer programmatically
@@ -259,6 +300,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
 //        performSegue(withIdentifier: "matchDetails", sender: indexPath)
+        //        tableScore.deselectRow(at: indexPath, animated: true)
+        //        collapseDetailViewController = false
 
     }
     
@@ -283,16 +326,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 if scoreModel.penalty?.hashValue == 0 {
                     
                     cell.homeTeam.text! += "*"
-                    //footer.isHidden = false
                     tableScore.tableFooterView = footer(for: tableScore)
                 }
                 if scoreModel.penalty?.hashValue == 1 {
                     
                     cell.awayTeam.text! += "*"
-                    //footer.isHidden = false
                     tableScore.tableFooterView = footer(for: tableScore)
-
-//                    tableScore.tableFooterView = footer
                 }
                 
             }
@@ -308,6 +347,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
     }
+    
+
     
 }
 

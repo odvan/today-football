@@ -20,11 +20,11 @@ enum FixturesTimeFrame {
         
         switch self {
         case .yesterday:
-            return Date.gameFixture(timeInterval: -32*day) /////// поправить обратно!
+            return Date.gameFixture(timeInterval: -day)
         case .today:
-            return Date.gameFixture(timeInterval: -31*day)
+            return Date.gameFixture(timeInterval: nil)
         case .tomorrow:
-            return Date.gameFixture(timeInterval: -30*day)
+            return Date.gameFixture(timeInterval: day)
         }
         
     }

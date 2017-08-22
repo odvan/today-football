@@ -18,11 +18,9 @@ class ScoreViewModelController {
     
     /* "BL1,PD,PL,SA,FL1,CL&"
      //?league=BL1,PL,SA,PD,FL1,CL&timeFrameStart=2017-05-20&timeFrameEnd=2017-05-20
-     FAC: http://api.football-data.org/v1/fixtures/?timeFrameStart=2016-11-14&timeFrameEnd=2016-11-14&league=FAC
+     FAC: http://api.football-data.org/v1/competitions/429/fixtures/?timeFrameStart=2016-11-14&timeFrameEnd=2016-11-14
 
      */
-    let token = "7dc5b5f70135455b9c5e1677c33920d2"
-    let session = URLSession.shared
     
     fileprivate var scoreModels: [ScoreViewModel?] = []
     var teamsDictGlobal: [String : Team] = [:]
@@ -38,15 +36,15 @@ class ScoreViewModelController {
         
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         
-        guard let url = URL(string: demoSummerURL) else { //demoURL + competitions  ///baseURL + competitions + date
+        guard let url = URL(string: baseURL + competitions + date) else { //demoURL + competitions  ///baseURL + competitions + date
             completionBlock(false, nil)
             return
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.setValue(token, forHTTPHeaderField: "X-Auth-Token")
+        urlRequest.setValue(Config.token, forHTTPHeaderField: "X-Auth-Token")
         
-        let task = session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
+        let task = Config.session.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             
             print("⭕️ main response: \(response!)")
             guard let strongSelf = self else { return }

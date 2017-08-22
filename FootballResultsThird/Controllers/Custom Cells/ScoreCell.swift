@@ -35,7 +35,7 @@ class ScoreCell: UITableViewCell {
         // Initialization code
         
         setOpaqueBackground()
-        liveGameSign.layer.cornerRadius = 4
+        //liveGameSign.layer.cornerRadius = 4
 
     }
     

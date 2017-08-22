@@ -104,6 +104,7 @@ extension Score {
         let draw = odds?["draw"] ?? 0
         let awayWin = odds?["awayWin"] ?? 0
         
+        
         self.gameStatus = Game(rawValue: gameStatus)!
         self.gameResult = "\(homeGoals) - \(awayGoals)"
         if (homeGoalsHT != nil), (awayGoalsHT != nil) {

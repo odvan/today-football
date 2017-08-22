@@ -12,7 +12,8 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet weak var tableStandings: UITableView!
     @IBOutlet weak var navBar: UINavigationBar!
-    
+    @IBOutlet weak var activityindicator: UIActivityIndicatorView!
+
     let cellID = "standingsCell"
     let cellHeaderID = "standingsHeaderCell"
     
@@ -35,18 +36,14 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
 //        }
 //    }
 
-    @IBAction func done(_ sender: Any) {
-        
-        dismiss(animated: true, completion: nil)
-//        tableStandings.dataSource = nil
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
         tableStandings.delegate = self
         tableStandings.dataSource = self
+        
+        tableStandings.backgroundView = activityindicator
         
     }
 
@@ -62,16 +59,18 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
         print("league is: \(league!)")
         if CompTableViewController.standingsCache[league!] == nil {
             
+            activityindicator.startAnimating()
+
             TeamsStandings.fetchingStandings(for: league!) { [weak self] (teamsStandings) in
                 
                 guard let strongSelf = self else { return }
-                
+
                 //tVC.teamsStandings
                 CompTableViewController.standingsCache[strongSelf.league!] = teamsStandings
-                UIApplication.shared.isNetworkActivityIndicatorVisible = false
 
                 DispatchQueue.main.async {
-//                    strongSelf.tableStandings.dataSource = self
+                    strongSelf.activityindicator.stopAnimating()
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     strongSelf.tableStandings.reloadData()
                 }
                 
@@ -84,6 +83,12 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
 //                self.tableStandings.reloadData()
 //            }
 
+    }
+    
+    @IBAction func done(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+        //        tableStandings.dataSource = nil
     }
     
     
@@ -112,9 +117,9 @@ class CompTableViewController: UIViewController, UITableViewDelegate, UITableVie
             
             cell.fillingTable(standingsModel)
             cell.teamName.text = dictionary[standingsModel.teamName]?.shortName
+            
         }
         
         return cell
-        
     }
 }

@@ -28,7 +28,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 
         // Do any additional setup after loading the view.
         
-        if let dictionary = UserDefaults.standard.object(forKey: kSelectedForSVC) as? [String : Bool] {
+        if let dictionary = UserDefaults.standard.object(forKey: GlobalKey.selectedForSVC) as? [String : Bool] {
             print("dictionary != nil")
         selectedCompetitionsDictionary = dictionary
         }
@@ -51,9 +51,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 
         if selectedCell.accessoryType == .checkmark {
             let allCompSelected = selectedCompetitionsDictionary.filter{ $0.1 == true }.count
-            if allCompSelected < 2 {
-                return
-            }
+            guard allCompSelected > 1 else { return }
+ 
             selectedCell.accessoryType = .none
             selectedCompetitionsDictionary[Array(selectedCompetitionsDictionary.keys)[indexPath.row]] = false
         } else {
@@ -95,10 +94,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         if segue.identifier == "backWithSelectedComp" {
             
-            UserDefaults.standard.set(selectedCompetitionsDictionary, forKey: kSelectedForSVC)
+            UserDefaults.standard.set(selectedCompetitionsDictionary, forKey: GlobalKey.selectedForSVC)
             selectedCompetitions = selectedCompetitionsDictionary.filter{ $0.1 == true }.map{ $0.0 }
             let selectedCompetitionsForURLPath = Competition.creatingStringForUrlPath(from: selectedCompetitions)
-            UserDefaults.standard.set(selectedCompetitionsForURLPath, forKey: kSelectedCompetitonsForUrlPath)
+            UserDefaults.standard.set(selectedCompetitionsForURLPath, forKey: GlobalKey.selectedCompetitonsForUrlPath)
             
             print("🆔 \(selectedCompetitionsForURLPath)")
         }
